@@ -578,6 +578,15 @@ box-shadow: 3px 1px 11px -1px #444444;
         top:0;
         z-index: 10023;
     }
+    .specificFriendsTalkingToFirstLetterImage{
+        left:11%;
+    }
+    .specificFriendsTalkingTo{
+        left:30%;
+    }
+    .typingInput{
+        width: 90%;
+    }
 }
 /* popUp Inbox */
 #containerPopUpOFInbox{
