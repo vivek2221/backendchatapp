@@ -1,4 +1,5 @@
 import mongoose  from "mongoose";
+import 'dotenv/config'
 await mongoose.connect(process.env.mongooseConnectionString)
 const GoogleLoginSchema=new mongoose.Schema({
     name:String,
@@ -6,6 +7,10 @@ const GoogleLoginSchema=new mongoose.Schema({
     sub:String
 }
 )
+const notAddedToMeSchema=new mongoose.Schema({
+    mineId:String,
+    notMine:Array
+})
 const directLoginSchema = new mongoose.Schema({
     name:{
         type:String,
@@ -20,7 +25,7 @@ const sidSchema= new mongoose.Schema({
     createdAt:{
         type:Date,
         default:Date.now,
-        expires:60*10
+        expires:60*10*60
     }
 })
 const reqPendingSchema=new mongoose.Schema({
@@ -44,22 +49,13 @@ const dataAllSchema=new mongoose.Schema({
         expires:60 * 60 * 24 * 3 
     }
 })
-const otpSchema=new mongoose.Schema({
-    email:String,
-    otp:Number,
-    timeAt:{
-        type:Date,
-        default:Date.now,
-        expires:60*5
-    }
-})
 const ModelGoogle= mongoose.model('googleLogin',GoogleLoginSchema)
 const ModelNormal= mongoose.model('normalLogin',directLoginSchema)
 const ModelSid=mongoose.model('sid',sidSchema)
 const ModelPendingReq=mongoose.model('pending',reqPendingSchema)
 const Modelconnections=mongoose.model('connections',connectionSchema)
 const ModelDataAll=mongoose.model('dataAll',dataAllSchema)
-const ModelOtp=mongoose.model('otp',otpSchema)
+const ModelAllThatAreNotMyFriends=mongoose.model('notAddedToMe',notAddedToMeSchema)
 
 export {
     ModelGoogle,
@@ -68,7 +64,7 @@ export {
     ModelPendingReq,
     Modelconnections,
     ModelDataAll,
-    ModelOtp
+    ModelAllThatAreNotMyFriends
 }
 process.on('SIGINT',async()=>{
    await  mongoose.disconnect()

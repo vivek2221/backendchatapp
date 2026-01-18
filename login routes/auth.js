@@ -1,4 +1,5 @@
 import { ModelSid } from "../mongooseShema.js"
+import 'dotenv/config'
 
 const auth=async (req,res,next)=>{ 
    const cookies=req.signedCookies.sid
@@ -8,11 +9,17 @@ const auth=async (req,res,next)=>{
         next()
      }
      else{
-        return res.json({mess:'not authorised'})
+        res.clearCookie('sid',{
+         httpOnly:true,
+         sameSite:process.env.SAME_SITE,
+        secure:process.env.SECURE==='true',
+        signed:true,
+        })
+        return res.json({mess:'reLogin'})
      }
    }
    else{
-    return res.json({mess:'not authorised'})
+    return res.json({mess:'reLogin'})
    }
 }
 export default auth

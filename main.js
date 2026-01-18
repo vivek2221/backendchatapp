@@ -8,25 +8,31 @@ import auth from './login routes/auth.js'
 import pending from './login routes/pendingReq.js'
 import connectionsTOMe from './login routes/connectionsTOMe.js'
 import beginData from './login routes/BeginData.js'
-import otp from './login routes/otp.js'
 import  rejectReq  from './login routes/rejectReq.js'
+import {app,httpServer} from './websocket.js'
+import path from 'path'
+import 'dotenv/config'
 
-const server = express()
-server.set('trust proxy', 1)
-server.use(cors({
-    origin:`http://${process.env.uiUrl}:5173`,
+app.set('trust proxy', 1)
+app.use(cors({
+    origin:process.env.uiUrl,
     credentials:true
 }))
-server.use(express.json())
-server.use(cookieParser('vivek'))
-server.use('/otpChecking',otp)
-server.use('/signUp',signUpRoute)
-server.use('/login',loginInRoute)
-server.use('/pendingReq',pending)
-server.use('/connectionTOMe',connectionsTOMe)
-server.use('/beginChat',beginData)
-server.use('/allUsers',auth,friendsListRoute)
-server.use('/rejectReq',rejectReq)
-server.listen(process.env.serverPort,process.env.urlCommon,()=>{
+app.use(express.json())
+app.use(cookieParser(process.env.SECRET))
+app.use('/signUp',signUpRoute)
+app.use('/login',loginInRoute)
+app.use('/pendingReq',auth,pending)
+app.use('/connectionTOMe',auth,connectionsTOMe)
+app.use('/beginChat',auth,beginData)
+app.use('/allUsers',auth,friendsListRoute)
+app.use('/rejectReq',auth,rejectReq)
+app.use(express.static('./frontEndChatApp/dist'))
+const currPath=path.resolve()
+app.get("*all",async(req,res)=>{
+    
+     res.sendFile(path.resolve(currPath,"./frontEndChatApp/dist","index.html"))
+})
+httpServer.listen((process.env.Port || 10000),process.env.urlCommon,()=>{
     console.log(`server started on port ${process.env.serverPort}`)
 })

@@ -4,7 +4,6 @@ import { Modelconnections, ModelGoogle, ModelNormal } from '../mongooseShema.js'
 const server = express.Router()
 server.get('/:name',async(req,res)=>{
    const {name:Nam}=req.params
-   console.log(Nam)
    const data=await ModelGoogle.find().lean()
    const dataNormal=await ModelNormal.find().lean()
    let arr=[]
@@ -30,7 +29,6 @@ server.get('/:name',async(req,res)=>{
  
    arr=arr.filter((ele)=>{
       if(!aConn.includes(ele)){
-         console.log('running')
         return ele
       }
    })

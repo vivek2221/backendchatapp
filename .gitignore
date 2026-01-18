@@ -1,2 +1,5 @@
 .env
 node_modules
+frontEndChatApp/.env
+frontEndChatApp/node_modules
+frontEndChatApp/.gitignore
