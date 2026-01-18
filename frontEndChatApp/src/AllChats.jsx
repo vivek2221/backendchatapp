@@ -30,7 +30,7 @@ function AllChats(){
         })
      })
      const phoneDisplayGoneOnButtonClick=contextSafe((e)=>{
-        gsap.to('.chattingDiv .arrow',{
+        gsap.to('.chattingDiv',{
             display:'none'
         })
      })
