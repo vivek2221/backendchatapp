@@ -2,9 +2,10 @@ import { useContext } from "react"
 import contextForWebsocket from "./websocketContent"
 
 function DisplayCurrFriends({name}){
-    const {setCurrTalkingName,setContentTexts}=useContext(contextForWebsocket)
+    const {setCurrTalkingName,phoneDisplayRealChat,setContentTexts}=useContext(contextForWebsocket)
     const  onClickFriend=(e)=>{
       setCurrTalkingName(name)
+      phoneDisplayRealChat()
     }
     return (
         <div className="eachSingleFriends" onClick={onClickFriend}>

@@ -441,6 +441,7 @@ box-shadow: 3px 1px 11px -1px #444444;
 }
 /* real chatting with user div info */
 .chattingDiv{
+    display: block;
     width: 70%;
     height: 100%;
     background-color: #fffefe;
@@ -570,6 +571,12 @@ box-shadow: 3px 1px 11px -1px #444444;
 @media (max-width:600px){
     .chattingDiv{
         display: none;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        left: 0;
+        top:0;
+        z-index: 10023;
     }
 }
 /* popUp Inbox */

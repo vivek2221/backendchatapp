@@ -24,6 +24,16 @@ function AllChats(){
          setNotification('none')
          
      })
+     const phoneDisplayRealChat=contextSafe((e)=>{
+        gsap.to('.chattingDiv',{
+            display:'block',
+        })
+     })
+     const phoneDisplayGoneOnButtonClick=contextSafe((e)=>{
+        gsap.to('.chattingDiv .arrow',{
+            display:'none'
+        })
+     })
      const popUpInboxClose=contextSafe((e)=>{
         gsap.to('#containerPopUpOFInbox',{
             display:'none',
@@ -56,6 +66,7 @@ function AllChats(){
     const [notification,setNotification]=useState('none')
     const [allFriendsData,setAllFriendsData]=useState([])
     const [contentTexts,setContentTexts]=useState([])
+    const [displayOfTextForPhone,setDisplayOfTextForPhone]=useState('none')
     const [webRunFirstTime,setWebRunFirstTime]=useState(0)
     const helper=useRef(currTalkingName)
     useEffect(() => {
@@ -98,7 +109,7 @@ function AllChats(){
   }
     },[])
     return (
-        <contextForWebsocket.Provider value={{findingSomeOne,setFindingSomeOne,searchingFriends,setSearchingFriends,contentTexts,setContentTexts,currTalkingName,setCurrTalkingName,ws,allFriendsData,name,setChangeState,pendingToMe,changeState,allUsersData}}>
+        <contextForWebsocket.Provider value={{phoneDisplayGoneOnButtonClick,phoneDisplayRealChat,findingSomeOne,setFindingSomeOne,searchingFriends,setSearchingFriends,contentTexts,setContentTexts,currTalkingName,setCurrTalkingName,ws,allFriendsData,name,setChangeState,pendingToMe,changeState,allUsersData}}>
             <Toaster />
         <div id="allChatsMainDiv"  ref={container}>
             <div id="topNavbarDiv">
@@ -116,7 +127,7 @@ function AllChats(){
                     </div>
                     <div className="separationLineAndFriends">
                         <div className="separationLine"></div>
-                        <AllFriends/>
+                        <AllFriends />
                         <div className="inBoxDiv" onClick={popUpInbox}>
                             <i className="ri-mail-unread-line"></i>
                             <div className="notificationIcon" style={{display:notification}}></div>
