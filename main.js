@@ -4,7 +4,6 @@ import signUpRoute from './login routes/signUp.js'
 import cookieParser from 'cookie-parser'
 import loginInRoute from './login routes/login.js'
 import friendsListRoute from './login routes/friendsListRoute.js'
-import auth from './login routes/auth.js'
 import pending from './login routes/pendingReq.js'
 import connectionsTOMe from './login routes/connectionsTOMe.js'
 import beginData from './login routes/BeginData.js'
@@ -34,5 +33,5 @@ app.get("*all",async(req,res)=>{
      res.sendFile(path.resolve(currPath,"./frontEndChatApp/dist","index.html"))
 })
 httpServer.listen((process.env.Port || 10000),process.env.urlCommon,()=>{
-    console.log(`server started on port ${process.env.serverPort}`)
+    console.log(`server started on port ${process.env.Port}`)
 })

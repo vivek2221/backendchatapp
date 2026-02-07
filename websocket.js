@@ -96,19 +96,19 @@ server.on('connection',async(ws,req)=>{
             if(!real.sid){
          throw new Error("sid not found")
         }
-            allFriendsToMe(valueMain.to,ws)
-            const checkExists=await ModelPendingReq.findOne({from:valueMain.from,to:valueMain.to})
-            if(checkExists){
-                const aId=await ModelNormal.findOne({name:valueMain.from}) || await ModelGoogle.findOne({name:valueMain.from})
-                 const bId=await ModelNormal.findOne({name:valueMain.to}) || await ModelGoogle.findOne({name:valueMain.to})
+        const checkExists=await ModelPendingReq.findOne({from:valueMain.from,to:valueMain.to})
+        if(checkExists){
+            const aId=await ModelNormal.findOne({name:valueMain.from}) || await ModelGoogle.findOne({name:valueMain.from})
+            const bId=await ModelNormal.findOne({name:valueMain.to}) || await ModelGoogle.findOne({name:valueMain.to})
+            await Modelconnections.create({a:valueMain.from,b:valueMain.to,aId:aId,bId:bId})
+            await ModelPendingReq.deleteMany({from:valueMain.to,to:valueMain.from})
+            await ModelPendingReq.deleteMany({from:valueMain.from,to:valueMain.to})
+                 allFriendsToMe(valueMain.to,ws)
                  const  ssidOtherUser = await ModelSid.findOne({someId:aId.id})
                 if(ssidOtherUser){
                     let socketOfOther=storing[ssidOtherUser.id]
                     allFriendsToMe(valueMain.from,socketOfOther)
                 }
-                await Modelconnections.create({a:valueMain.from,b:valueMain.to,aId:aId,bId:bId})
-                await ModelPendingReq.deleteMany({from:valueMain.to,to:valueMain.from})
-                await ModelPendingReq.deleteMany({from:valueMain.from,to:valueMain.to})
                 
             }
             
@@ -117,7 +117,10 @@ server.on('connection',async(ws,req)=>{
             if(!real.sid){
          throw new Error("sid not found")
         }
+        
         try{
+                const idFinding=await Modelconnections.findOne({a:valueMain.from,b:valueMain.to}) || await Modelconnections.findOne({a:valueMain.to,b:valueMain.from})
+                const opsTime=await ModelDataAll.insertOne({searchId:idFinding.id,msg:valueMain.input,from:valueMain.from,to:valueMain.to})
                 const toIdSid= await ModelSid.findOne({name:valueMain.to})
                 if(storing[toIdSid.id]){
                 storing[toIdSid.id].send(JSON.stringify({kindOf:'chatMessage',msg:valueMain.input,from:valueMain.from,timeAt:opsTime.timeAT}))
@@ -126,17 +129,13 @@ server.on('connection',async(ws,req)=>{
             catch(err){
                 console.log("err",err)
             }
-            const idFinding=await Modelconnections.findOne({a:valueMain.from,b:valueMain.to}) || await Modelconnections.findOne({a:valueMain.to,b:valueMain.from})
-            if(idFinding){
-            const opsTime=await ModelDataAll.insertOne({searchId:idFinding.id,msg:valueMain.input,from:valueMain.from,to:valueMain.to})
-            }
         }
         else if(kindOf==='pendingReqsForMe'){
             if(!real.sid){
          throw new Error("sid not found")
         }
            let allPendingsForMe=await ModelPendingReq.find({to:valueMain.from})
-           allPendingsForMe= allPendingsForMe.map((ele)=>{
+           allPendingsForMe = allPendingsForMe.map((ele)=>{
            return ele.from})
            ws.send(JSON.stringify({kindOf:"pendingsToMe",data:allPendingsForMe}))
         }

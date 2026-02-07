@@ -544,12 +544,12 @@ box-shadow: 3px 1px 11px -1px #444444;
     border-left: 10px solid transparent;
     position: absolute;
     right: -9px;
-
 }
 .mineText{
-    max-width: 50%;
+    max-width: 100%;
     background-color: #ECE9E9;
     position: relative;
+    word-break: break-all;
     border-radius: 10px;
 }
 .othersIndicator{

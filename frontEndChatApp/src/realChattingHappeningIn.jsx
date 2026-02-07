@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react"
-import CurrChattingShowingDivMain from "./currTalkingFriendTopNav"
+import CurrChattingShowingDivMain from "./CurrTalkingFriendTopNav"
 import TextToShow from "./TextToShow"
 import contextForWebsocket from "./websocketContent"
 

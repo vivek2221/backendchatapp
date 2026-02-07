@@ -2,7 +2,7 @@ import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 import SubLogin from './SubmitLogin.jsx'
 import './Main.css'
-import AllChats from './allChats.jsx'
+import AllChats from './AllChats.jsx'
 const root=createRoot(document.querySelector('#root'))
 const routes=createBrowserRouter([
   {
@@ -14,7 +14,7 @@ const routes=createBrowserRouter([
     element:<SubLogin Type='login'/>
   },
   {
-    path:'allChats',
+    path:'/allChats',
     element:<AllChats/>
   }
 ])
