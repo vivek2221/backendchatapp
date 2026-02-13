@@ -7,11 +7,11 @@ const root=createRoot(document.querySelector('#root'))
 const routes=createBrowserRouter([
   {
     path:'/',
-    element:<SubLogin Type='signIn'/>
+    element:<SubLogin Type='signIn' key='signIn'/>
   },
   {
     path:'/signIn',
-    element:<SubLogin Type='login'/>
+    element:<SubLogin Type='login' key='login'/>
   },
   {
     path:'/allChats',

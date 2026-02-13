@@ -162,7 +162,7 @@ function SubLogin({Type}){
                 </div>
                 <form id="form" >
                     <div id="LogoMainPageLogin"><img src='./whisperLogo.png' alt="WhisperLogo" id="whisperImage"></img></div>
-                {Type==='login'?<CustomInput inputHint='name' classForDivs="classForComponentInputDiv"  classN="inputClasses" inputValue={values.name} setValues={setValues} error={errors.name}/>:false}
+                {Type!=='signIn'?<CustomInput inputHint='name' classForDivs="classForComponentInputDiv"  classN="inputClasses" inputValue={values.name} setValues={setValues} error={errors.name}/>:true}
                     <CustomInput inputHint='email' classForDivs="classForComponentInputDiv" classN="inputClasses" inputValue={values.email} setValues={setValues} error={errors.email}/>
                     <CustomInput inputHint='password' classForDivs="classForComponentInputDiv" classN="inputClasses" inputValue={values.password} setValues={setValues} error={errors.password}/>
                     <button  id="loginButton"  onMouseLeave={leaveAnimation}  onMouseMove={animateButton} 
