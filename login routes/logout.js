@@ -1,5 +1,5 @@
 import express from "express";
-import { ModelSid } from "../mongooseShema";
+import { ModelSid } from "../mongooseShema.js";
 const server = express.Router()
 server.delete('/',async(req,res)=>{
    const cookies=req.signedCookies.sid;
