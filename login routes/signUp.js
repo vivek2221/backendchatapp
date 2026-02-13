@@ -6,8 +6,8 @@ const sameSite=process.env.SAME_SITE
 const secure=(process.env.SECURE==='true')
 const server=express.Router()
 async function normal(res,name,email,password){
-   const nameCheck=await ModelNormal.findOne({name,email})
-      const nameCheckGoogle=await ModelGoogle.findOne({name,email})
+   const nameCheck=await ModelNormal.findOne({name})
+      const nameCheckGoogle=await ModelGoogle.findOne({name})
       if(nameCheck || nameCheckGoogle){
          return res.json({mess:'user already exists'})
       }

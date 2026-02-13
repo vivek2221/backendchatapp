@@ -109,7 +109,6 @@ server.on('connection',async(ws,req)=>{
                     let socketOfOther=storing[ssidOtherUser.id]
                     allFriendsToMe(valueMain.from,socketOfOther)
                 }
-                
             }
             
         }
@@ -117,7 +116,6 @@ server.on('connection',async(ws,req)=>{
             if(!real.sid){
          throw new Error("sid not found")
         }
-        
         try{
                 const idFinding=await Modelconnections.findOne({a:valueMain.from,b:valueMain.to}) || await Modelconnections.findOne({a:valueMain.to,b:valueMain.from})
                 const opsTime=await ModelDataAll.insertOne({searchId:idFinding.id,msg:valueMain.input,from:valueMain.from,to:valueMain.to})

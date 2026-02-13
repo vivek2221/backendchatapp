@@ -18,6 +18,11 @@ function GoogleAuth(){
     }).then(data=>data.json())
     .then((data)=>{
             if(data.mess==='go'){
+                const ws=new WebSocket(import.meta.env.VITE_WEBSOCKET_URL)
+                ws.onopen=()=>{
+                ws.send(JSON.stringify({kindOf:'newLogin',mineName:data.name}))
+                ws.close()
+                }
                 localStorage.setItem("name",data.name)
                 navigate('/allChats',{state:{name:data.name}})
             }
