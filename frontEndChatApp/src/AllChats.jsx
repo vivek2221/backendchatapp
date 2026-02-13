@@ -101,7 +101,7 @@ function AllChats(){
             }
         }
         else if(msgData.kindOf==='reLogin'){
-            fetch(`${import.meta.env.VITE_URL_SERVER}`,{
+            fetch(`${import.meta.env.VITE_URL_SERVER}/logout`,{
                 method:'DELETE',
                 credentials:'include'
             })

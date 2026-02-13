@@ -1,6 +1,8 @@
 import express from "express";
 import { ModelSid } from "../mongooseShema.js";
 const server = express.Router()
+const sameSite=process.env.SAME_SITE
+const secure=(process.env.SECURE==='true')
 server.delete('/',async(req,res)=>{
    const cookies=req.signedCookies.sid;
    res.clearCookie('sid',{
