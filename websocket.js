@@ -41,7 +41,7 @@ server.on('connection',async(ws,req)=>{
     if(real.sid){
     const signed=real.sid
     const value =signed.slice(2)
-    const reavalue=signature.unsign(value,process.env.SECRET)
+    const reavalue=signature.unsign(value,process.env.SECRET).slice(2)
     const ssidValidation=await ModelSid.findOne({_id:reavalue})
     if(ssidValidation==null){
      ws.send(JSON.stringify({kindOf:'reLogin'}))
