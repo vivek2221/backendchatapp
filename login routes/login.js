@@ -25,9 +25,10 @@ server.post('/',async(req,res)=>{
         const found = await ModelNormal.findOne({email,password}) || await ModelGoogle.findOne({email,password})
         if(found){
          const whereFinded=await ModelNormal.findOne({email,password})
+
          await ModelSid.deleteMany({someId:found.id})
         const sessionId=await ModelSid.insertOne({someId:found.id,name:found.name,TypeOfLoginSid:whereFinded===null?'ModelGoogle':'ModelNormal'})
-     res.cookie('sid',sessionId.id,{
+     res.cookie('sid',sessionId._id,{
       httpOnly:true,
         sameSite:sameSite,
         secure:secure,

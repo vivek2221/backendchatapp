@@ -42,6 +42,11 @@ server.on('connection',async(ws,req)=>{
     const signed=real.sid
     const value =signed.slice(2)
     const reavalue=signature.unsign(value,process.env.SECRET)
+    const ssidValidation=await ModelSid.findOne({_id:reavalue})
+    if(ssidValidation==null){
+     ws.send(JSON.stringify({kindOf:'reLogin'}))
+    }
+    else{
     storing[reavalue]=ws
     ws.on('close', () => {
     delete storing[reavalue]
@@ -151,7 +156,7 @@ server.on('connection',async(ws,req)=>{
         }catch(err){
           ws.send(JSON.stringify({kindOf:'reLogin'}))
           }
-     })
+     })}
 
 })
 export {
