@@ -45,6 +45,10 @@ server.put('/GoogleLogin',async(req,res)=>{
        return  res.json({mess:'go',name:found.name})
     }
     else{
+      const previousSameNameExists=await ModelGoogle.findOne({name:values.name})
+      if(previousSameNameExists){
+         return res.json({mess:'user with same name already exists'})
+      }
        const Id= await ModelGoogle.create({name:values.name,sub:values.sub,email:values.email})
        const sessionId=await ModelSid.insertOne({someId:Id.id,name:Id.name,TypeOfLoginSid:'ModelGoogle'})
        res.cookie('sid',sessionId.id,{
