@@ -45,12 +45,14 @@ server.on('connection',async(ws,req)=>{
     const ssidValidation=await ModelSid.findOne({_id:reavalue})
     if(ssidValidation==null){
      ws.send(JSON.stringify({kindOf:'reLogin'}))
+     return ws.terminate()
     }
     else{
     storing[reavalue]=ws
     ws.on('close', () => {
     delete storing[reavalue]
     })}
+}
     ws.on('message',async(msg)=>{
         const valueMain=JSON.parse(msg.toString())
         const {kindOf}=valueMain
@@ -156,7 +158,7 @@ server.on('connection',async(ws,req)=>{
         }catch(err){
           ws.send(JSON.stringify({kindOf:'reLogin'}))
           }
-     })}
+     })
 
 })
 export {
