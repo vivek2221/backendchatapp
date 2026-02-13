@@ -49,6 +49,15 @@ server.on('connection',async(ws,req)=>{
      return ws.terminate()
     }
     else{
+    const CurrSessionToRemoveFromSocket=await ModelSid.findOne({_id:{$ne:[ssidValidation.id]},someId:ssidValidation.someId})
+    if (CurrSessionToRemoveFromSocket && storing[CurrSessionToRemoveFromSocket.id]) {
+    const oldSocket = storing[CurrSessionToRemoveFromSocket.id];
+    if (oldSocket.readyState === WebSocket.OPEN) {
+        oldSocket.send(JSON.stringify({ kindOf: 'reLogin' }));
+    }
+    oldSocket.terminate();
+    delete storing[CurrSessionToRemoveFromSocket.id];
+}
     storing[reavalue]=ws
     ws.on('close', () => {
     delete storing[reavalue]
