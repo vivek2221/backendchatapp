@@ -8,6 +8,7 @@ import pending from './login routes/pendingReq.js'
 import connectionsTOMe from './login routes/connectionsTOMe.js'
 import beginData from './login routes/BeginData.js'
 import  rejectReq  from './login routes/rejectReq.js'
+import logout from './login routes/logout.js'
 import {app,httpServer} from './websocket.js'
 import 'dotenv/config'
 
@@ -19,6 +20,7 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser(process.env.SECRET))
 app.use('/signUp',signUpRoute)
+app.use('/logout',logout)
 app.use('/login',loginInRoute)
 app.use('/pendingReq',pending)
 app.use('/connectionTOMe',connectionsTOMe)

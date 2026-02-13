@@ -101,6 +101,7 @@ function AllChats(){
             }
         }
         else if(msgData.kindOf==='reLogin'){
+            fetch()
             navigate('/')
         }
     }
