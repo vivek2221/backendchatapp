@@ -1,5 +1,6 @@
 import express from "express";
 import { ModelSid } from "../mongooseShema.js";
+import 'dotenv/config'
 const server = express.Router()
 const sameSite=process.env.SAME_SITE
 const secure=(process.env.SECURE==='true')
