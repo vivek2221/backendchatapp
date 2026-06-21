@@ -23,7 +23,12 @@ function PendingRequestsInbox({onClickFunc}){
                 <div className="pendingRequests" onClick={(e)=>{
                     e.stopPropagation()
                 }}>
-                    <div className="requestsDiv">Requests</div>
+                    <div className="requestsMainText">
+                        <div className="requestsDiv">Requests</div>
+                        <div onClick={onClickFunc}>
+                            <img style={{width:'20px',height:'20px'}} src="./cross.svg"></img>
+                        </div>
+                    </div>
                     <div className="reusablesReqDivs">
                         {pendingToMe.map((ele,index)=>{
                             return <PendingRequests key={index} name={ele}/>

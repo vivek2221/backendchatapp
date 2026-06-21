@@ -23,13 +23,17 @@ function PopUpForAllUsers({closePopUp}){
     return (
        <div id="containerPopUpOfNewFriends" onClick={closePopUp}>
                 <div className="addRequestBoxDiv" onClick={(e)=>e.stopPropagation()}>
-                    <div className="addNameNameDiv">Add Friends</div>
+                    <div className="addNameNameDiv">
+                        <div>Add Friends</div>
+                        <div onClick={closePopUp}>
+                            <img style={{width:'20px',height:'20px'}} src="./cross.svg"></img>
+                        </div>
+                </div>
                     <div className="searchNewFriends">
-                        <input className="inputSearchForNewFriends" type="text" value={findingSomeOne} placeholder="Search" onChange={(e)=>{
+                        <input className="inputSearchForNewFriends" type="text" value={findingSomeOne} placeholder="Search here" onChange={(e)=>{
                             setFindingSomeOne(e.target.value)
                         }}></input>
                     </div>
-                    <div className="blackLineAfterSearchBox"></div>
                     <div className="newFriendsActualDiv">
                         {allUsersData.filter((ele) => 
                             ele.toLowerCase().includes(findingSomeOne.toLowerCase())

@@ -31,7 +31,7 @@ function RealChat(){
         }
     }
     useEffect(()=>{
-        if(currTalkingName!=='Whisper'){
+        if(currTalkingName!=='Viver'){
       fetch(`${import.meta.env.VITE_URL_SERVER}/beginChat/${name}/${currTalkingName}`,{
         method:'GET',
         credentials:'include'
@@ -59,8 +59,9 @@ function RealChat(){
                         <input type="text" className="typingInput" placeholder="Type here..." value={typingContent} onKeyDown={(e)=>{
                           if(e.key==='Enter'){
                            onClickButtonToSendText()
-                          }}} onChange={(e)=>setTypingContent(e.target.value)}></input></div>
-                        <div className="sendIcon" onClick={onClickButtonToSendText}><i className="ri-send-plane-2-line"></i></div>
+                          }}} onChange={(e)=>setTypingContent(e.target.value)}></input>
+                          <div className="sendIcon" onClick={onClickButtonToSendText}><i className="ri-send-plane-2-line colorChanging" ></i></div>
+                          </div>
                     </div>
                 </div>
     )

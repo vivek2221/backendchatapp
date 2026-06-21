@@ -24,7 +24,7 @@ function AllFriends(){
                  )
                  .map((ele,index)=>{
                     return <DisplayCurrFriends name={ele} key={index}/>
-                }) : <div style={{width:'50%',height:"100%",display:'flex',alignItems:'center',justifyContent:'center'}}>no curr friends</div>}
+                }) : <div style={{width:'50%',height:"100%",display:'flex',alignItems:'center',justifyContent:'center',color:'white'}}>no current friends</div>}
             </div>
     )
 }

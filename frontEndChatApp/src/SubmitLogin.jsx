@@ -149,11 +149,14 @@ function SubLogin({Type}){
     },[])
     return (
         <div ref={verifyContainer} id='mainDivLogin'>
+            <video style={{width:'100%',height:'100%',backgroundColor: 'black',position:'absolute',objectFit:'cover'}} autoPlay muted  loop playsInline>
+            <source  src="./videoLogin.mp4" type="video/mp4"/>
+            </video>
             <Toaster />
             <div id="forColorBlur">
                  <div id='loginBoxDiv'>
                 <div id="imageNearFormDiv">
-                    <img src='./loginPageMainImage.png' id="loginPageImage" alt='imageLogo'></img>
+                    <img src='./loginPageMainImage.gif' id="loginPageImage" alt='imageLogo'></img>
                 </div>
                 <div id='svgLineDiv'>
                     <svg>
@@ -161,7 +164,7 @@ function SubLogin({Type}){
                     </svg>
                 </div>
                 <form id="form" >
-                    <div id="LogoMainPageLogin"><img src='./whisperLogo.png' alt="WhisperLogo" id="whisperImage"></img></div>
+                    <div id="LogoMainPageLogin"><img src='./ViverLogo.svg' alt="ViverLogo" id="whisperImage"></img></div>
                 {Type!=='signIn'?<CustomInput inputHint='name' classForDivs="classForComponentInputDiv"  classN="inputClasses" inputValue={values.name} setValues={setValues} error={errors.name}/>:true}
                     <CustomInput inputHint='email' classForDivs="classForComponentInputDiv" classN="inputClasses" inputValue={values.email} setValues={setValues} error={errors.email}/>
                     <CustomInput inputHint='password' classForDivs="classForComponentInputDiv" classN="inputClasses" inputValue={values.password} setValues={setValues} error={errors.password}/>

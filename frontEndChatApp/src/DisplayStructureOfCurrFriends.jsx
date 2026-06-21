@@ -9,8 +9,8 @@ function DisplayCurrFriends({name}){
     }
     return (
         <div className="eachSingleFriends" onClick={onClickFriend}>
-          <div className="imageNameFirstLetterEach" style={{position:'absolute',left:'8%',top:'13%'}}>{name[0].toUpperCase()}</div>
-          <div style={{position:'absolute',top:'30%',left:'30%' }}>{name}</div>
+          <div className="imageNameFirstLetterEach" style={{position:'absolute',left:'3%',top:'13%',border:'1px solid black'}}><img src="./forAll.svg" style={{width:'100%',height:'100%'}} alt="avatar"></img></div>
+          <div style={{position:'absolute',top:'30%',left:'16%' }}>{name}</div>
           <div style={{position:'absolute',top:'30%',left:'90%',fontSize:15,color:'#7171E0'}}>0</div>
           
         </div>

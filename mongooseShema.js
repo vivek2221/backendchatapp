@@ -1,6 +1,12 @@
 import mongoose  from "mongoose";
 import 'dotenv/config'
-await mongoose.connect(process.env.mongooseConnectionString)
+const dbOptions={
+    maxPoolSize:50,
+    minPoolSize:5,
+    maxIdleTimeMS:30000,
+    serverSelectionTimeoutMS:5000,
+}
+await mongoose.connect(process.env.mongooseConnectionString,dbOptions)
 const GoogleLoginSchema=new mongoose.Schema({
     name:String,
     email:String,
