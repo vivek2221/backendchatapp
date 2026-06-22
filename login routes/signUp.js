@@ -2,6 +2,8 @@ import express from 'express'
 import {ModelGoogle,ModelNormal,ModelSid} from '../mongooseShema.js'
 import 'dotenv/config'
 import { emailSchema, nameSchema, passwordSchema } from '../zodSchemaValidation/zodValidation.js'
+import { broadcastAllUsers } from '../websocket.js'
+
 const sameSite=process.env.SAME_SITE
 const secure=(process.env.SECURE==='true')
 const server=express.Router()
@@ -12,6 +14,7 @@ async function normal(res,name,email,password){
          return res.json({mess:'user already exists'})
       }
      await ModelNormal.insertOne({name,email,password}) 
+     broadcastAllUsers().catch(err => console.error("Error broadcasting new user registration:", err))
      return res.json({mess:'reLogin'}) 
 }
 server.put('/',async(req,res)=>{
@@ -27,7 +30,7 @@ server.put('/',async(req,res)=>{
    else{
       return res.status(401).json({mess:'enter correctly'})
    }
-       await normal(res,name,email,password)
+        await normal(res,name,email,password)
 })
 server.put('/GoogleLogin',async(req,res)=>{
     const values=JSON.parse((new Buffer.from(((req.body.key).split('.'))[1],'base64')).toString())
@@ -50,6 +53,7 @@ server.put('/GoogleLogin',async(req,res)=>{
          return res.json({mess:'user with same name already exists'})
       }
        const Id= await ModelGoogle.create({name:values.name,sub:values.sub,email:values.email})
+       broadcastAllUsers().catch(err => console.error("Error broadcasting new user registration:", err))
        const sessionId=await ModelSid.insertOne({someId:Id.id,name:Id.name,TypeOfLoginSid:'ModelGoogle'})
        res.cookie('sid',sessionId.id,{
       httpOnly: true,

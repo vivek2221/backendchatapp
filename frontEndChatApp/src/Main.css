@@ -1,856 +1,1632 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-       font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+:root {
+  --bg-dark: #f8fafc;
+  --bg-sidebar: #ffffff;
+  --bg-chat: #f1f5f9;
+  --bg-card: #ffffff;
+  --border-color: #e2e8f0;
+  
+  --text-main: #0f172a;
+  --text-sec: #475569;
+  --text-muted: #64748b;
+  
+  --accent-color: #0d9488;
+  --accent-gradient: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+  --accent-glow: rgba(20, 184, 166, 0.15);
+  
+  --glass-bg: rgba(255, 255, 255, 0.95);
+  --glass-border: 1px solid rgba(15, 23, 42, 0.06);
+  --glass-shadow: 0 15px 35px rgba(15, 23, 42, 0.06);
 }
-/* login form  */
-#mainDivLogin{
-   width: 100vw;
-   height: 100vh;
-   display: flex;
-   align-items: center;
-   justify-content: center;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
-#forColorBlur{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
 }
-#loginBoxDiv{
-    width: 60%;
-    height: 75%;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    background-color: rgb(236, 233, 233);
-    box-shadow: 5px 9px 23px 1px rgba(0,0,0,0.75);
--webkit-box-shadow: 5px 9px 23px 1px rgba(0,0,0,0.75);
--moz-box-shadow: 5px 9px 23px 1px rgba(0,0,0,0.75);
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
-#imageNearFormDiv{
-   width: 45%;
-   height: 100%;
-   
+::-webkit-scrollbar-track {
+  background: transparent;
 }
-#loginPageImage{
-    width: 100%;
-    height: 100%;
-    
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 10px;
 }
-#svgLineDiv{
-    width: 8%;
-    height: 100%;
-    
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
 }
-#form{
-    width: 40%;
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
+
+/* login form */
+#mainDivLogin {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background-color: #f8fafc;
 }
-.classForComponentInputDiv{
-   width: 100%;
-    height: 12%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+
+#forColorBlur {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.12), transparent 60%);
+  z-index: 2;
 }
-.inputClasses{
-    width: 0;
-    height: 100%;
-    border-radius: 10px;
-    padding-left: 0;
-    border: none;
-    outline: none;
-    background-color: white;
-    transform-origin: center;
+
+#loginBoxDiv {
+  width: 55%;
+  height: 70%;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: var(--glass-border);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
 }
-.errors{
-    margin:0;
-    padding:0;
-    color:rgb(208, 47, 47);
-    position:absolute;
-    top:84%;
-    left: 6%;
+
+#imageNearFormDiv {
+  width: 45%;
+  height: 100%;
+  position: relative;
+  background: #0f172a;
 }
-#loginButton{
-    width: 50%;
-    height: 9%;
-    border-radius: 10px;
-    position: relative;
-    border: none;
-    outline: none;
-    background-color: #0A0B0B;
-    color: white;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+
+#loginPageImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
 }
-#LogoMainPageLogin{
-    width: 40%;
-    height: 14%;
-    background-color: white;
+
+#svgLineDiv {
+  width: 5%;
+  height: 100%;
 }
-#whisperImage{
-    width: 100%;
-    height: 100%;
-    background-color:rgb(236, 233, 233);
+
+#form {
+  width: 50%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
 }
-#movingAnimationInsideButton{
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    background-color: rgba(112, 112, 224, 0.237);
-    color: white;
-    backdrop-filter: blur(15px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
+
+.classForComponentInputDiv {
+  width: 100%;
+  height: 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
-#movingcircleAnimation{
-    width: 20%;
-    height: 70%;
-    border-radius: 50%;
-    background-color: white;
-    position: absolute;
-    display: none;
+
+.inputClasses {
+  width: 0;
+  height: 100%;
+  border-radius: 12px;
+  padding-left: 14px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+  background: #ffffff;
+  color: var(--text-main);
+  font-size: 15px;
+  transition: all 0.3s ease;
 }
-.infoDiv{
-    color:blue;
+
+.inputClasses:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-glow);
 }
-.infoDiv:hover{
-    color: rgb(247, 108, 108);
+
+.errors {
+  margin: 0;
+  padding: 0;
+  color: #ef4444;
+  position: absolute;
+  top: 85%;
+  left: 6%;
+  font-size: 12px;
+  font-weight: 500;
 }
-.googleDiv{
-    width: 100%;
-    height: 15%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+
+#loginButton {
+  width: 60%;
+  height: 10%;
+  border-radius: 12px;
+  position: relative;
+  border: none;
+  outline: none;
+  background: var(--accent-gradient);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+#loginButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
+}
+
+#loginButton:active {
+  transform: translateY(0);
+}
+
+#LogoMainPageLogin {
+  width: 50%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#whisperImage {
+  width: auto;
+  height: 100%;
+  filter: invert(8%) sepia(21%) saturate(1472%) hue-rotate(185deg) brightness(98%) contrast(97%);
+}
+
+#movingAnimationInsideButton {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background: transparent;
+}
+
+#movingcircleAnimation {
+  width: 30%;
+  height: 90%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  display: none;
+  filter: blur(10px);
+}
+
+.infoDiv {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.infoDiv:hover {
+  color: #14b8a6;
+}
+
+.googleDiv {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 @media (max-width: 600px) {
-    #mainDivLogin{
-        width: 100vw;
-        height: 92.5vh;
-    }
-    #imageNearFormDiv{
-        display: none;
-    }
-    #svgLineDiv{
-        display: none;
-    }
-    #form{
-        width: 100%;
-        height: 100%;
-        background-color: rgb(236, 233, 233);
-    }
-    #LogoMainPageLogin{
-        display: block;
-        color:red;
-        font-size: 20px;
-    }
-    #loginBoxDiv{
-        width: 80%;
-        height: 60%;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 5px 8px 29px 4px rgba(0,0,0,0.75);
--webkit-box-shadow: 5px 8px 29px 4px rgba(0, 0, 0, 0.577);
--moz-box-shadow: 5px 8px 29px 4px rgba(0,0,0,0.75);
-    }
-    #mainDivLogin{
-        background-color: #F7F5F3;
-    }
+  #mainDivLogin {
+    width: 100vw;
+    height: 92.5vh;
+  }
+  #imageNearFormDiv, #svgLineDiv {
+    display: none;
+  }
+  #form {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+  #loginBoxDiv {
+    width: 90%;
+    height: 65%;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+  }
 }
+
 /* otp verification Page */
-#verificationMainPage{
-    display: none;
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    background-color: rgba(183, 175, 175, 0.772);
-    align-items: center;
-    justify-content: center;
+#verificationMainPage {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(248, 250, 252, 0.85);
+  backdrop-filter: blur(12px);
+  align-items: center;
+  justify-content: center;
 }
-#verificationBoxDiv{
-    background-color: rgb(255, 255, 255);
-    width: 20%;
-    height:30%;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10%;
-    justify-content: center;
+
+#verificationBoxDiv {
+  background: #ffffff;
+  border: var(--glass-border);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  width: 25%;
+  height: 35%;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8%;
+  justify-content: center;
+  padding: 24px;
 }
-.otpDivInput{
-    width: 80%;
-    height: 20%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    
+
+.otpDivInput {
+  width: 85%;
+  height: 22%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
-.otpInput{
-    width: 90%;
-    height: 80%;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    padding: 10px;
-    background-color: rgb(217, 216, 216);
+
+.otpInput {
+  width: 100%;
+  height: 90%;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid #cbd5e1;
+  padding: 10px;
+  background: #ffffff;
+  color: var(--text-main);
+  text-align: center;
+  font-size: 20px;
+  letter-spacing: 6px;
+  transition: all 0.3s ease;
 }
-.otpInput:focus{
-    -webkit-box-shadow: 3px 1px 11px -1px #444444; 
-box-shadow: 3px 1px 11px -1px #444444;
+
+.otpInput:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-glow);
 }
-#verifyButtonOtp{
-     width: 20%;
-    height: 15%;
-    border-radius: 5px;
-    position: relative;
-    border: none;
-    outline: none;
-    background-color: rgb(112, 112, 224);
-    color: white;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+#verifyButtonOtp {
+  width: 40%;
+  height: 18%;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: var(--accent-gradient);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--accent-glow);
+  transition: all 0.2s ease;
 }
+
+#verifyButtonOtp:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(20, 184, 166, 0.35);
+}
+
 @media (max-width: 600px) {
-    #verificationBoxDiv{
-        width: 80%;
-        box-shadow: 5px 9px 23px 1px rgba(0,0,0,0.75);
--webkit-box-shadow: 5px 9px 23px 1px rgba(0,0,0,0.75);
--moz-box-shadow: 5px 9px 23px 1px rgba(0,0,0,0.75);
-    }
+  #verificationBoxDiv {
+    width: 85%;
+    height: 40%;
+  }
 }
-/* chatting page Info */
-#allChatsMainDiv{
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+
+/* chatting page Dashboard Layout */
+#allChatsMainDiv {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg-dark);
 }
+
 /* top nav bar css */
-#topNavbarDiv{
-    width: 100%;
-    height: 10%;
-    background-color: #121212;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #5B5B5B;
-    justify-content: space-between;
-    position: relative;
+#topNavbarDiv {
+  width: 100%;
+  height: 10%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  justify-content: space-between;
+  position: relative;
+  padding-inline: 20px;
 }
-#imageLogoTopNavbarDiv{
-    width: 80px;
-    height: 80px;
-    margin-left: 14px;
-    display: flex;
-    align-items: center;
+
+#imageLogoTopNavbarDiv {
+  height: 100%;
 }
-#imageOfNameDiv{
-    width: 50px;
-    height: 50px;
-    background-color: white;
-    color: #39f1f174;
-    font-weight: 600;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 20px;
-    cursor: pointer;
-    font-size: larger;
-    position: relative;
-    z-index: 102;
+
+#imageOfNameDiv {
+  width: 42px;
+  height: 42px;
+  background: var(--accent-gradient);
+  color: white;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 15px;
+  position: relative;
+  z-index: 102;
+  box-shadow: 0 2px 10px rgba(20, 184, 166, 0.25);
+  transition: transform 0.2s ease;
 }
-.underLines{
-    border-bottom: 1px solid rgba(39, 38, 38, 0.301);
+
+#imageOfNameDiv:hover {
+  /* Still icon on hover */
 }
-#dropDown{
-    position: absolute;
-    color: white;
-    right: 0;
-    top: 10%;
-    z-index: 100;
+
+.underLines {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Profile menu dropdown wrapper, dropdown, and logout button styles removed */
+
+@media (max-width: 600px) {
+  #topNavbarDiv {
     display: none;
-    height: 80%;
-    flex-direction:row;
-    align-items: center;
-    width: 200px;
-    opacity: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: #121212;
+  }
+  #allChatsMainDiv {
+    width: 100%;
+    height: 100%;
+  }
 }
-#logoutButton{
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color: white;
-    padding: 2px;
-    cursor: pointer;
-}
-@media (max-width:600px) {
-    #topNavbarDiv{
-        display: none;
-    }
-    #allChatsMainDiv{
-        width: 100%;
-        height: 100%;
-    }
-}
+
 /* parent container of all chatting info */
-#chattingInfoParentDiv{
-    width: 100%;
-    height: 90%;
-    display: flex;
-    align-items: center;
-    position: relative;
+#chattingInfoParentDiv {
+  width: 100%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
-.inBoxDiv{
-    background-color: white;
-    box-shadow: 0px 2px 12px -1px rgba(0,0,0,0.75);
-    outline-style: solid;
-    outline-width: 0.1px;
-    outline-color: rgb(137, 136, 136);
-    color: black;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    bottom: 2%;
-    left: 2%;
-    cursor: pointer;
-}
-.notificationIcon{
-    background-color: rgb(255, 28, 28);
-    position: absolute;
-    right:7%;
-    top:7%;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-}
-/* chats users plus search for usersAdded Div info */
-#chatsContentDiv{
-    width: 30%;
-    height: 100%;
-    background-color: #333333;
-    border-right: 1px solid #5B5B5B;
-}
-#addPlusSearch{
-    width: 100%;
-    height: 10%;
-    display: flex;
-    align-items:center ;
-    justify-content: space-evenly;
-    position: relative;
-}
-#searchingChats{
-    background-color: #c4c4c4;
-    outline: none;
-    border: none;
-    border-radius: 10px;
-    width: 70%;
-    height: 60% ;
-    padding-left: 40px;
-    cursor: pointer;
-    font-size: 18px;
-}
-#addPeopleButton{
-    width: 2.5vw;
-    height:5vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    border-radius: 50%;
-    outline-style: solid;
-    outline-width: 1px;
-    cursor: pointer;
-    outline-color: rgb(178, 176, 176);
-    background-color: #c4c4c4;
-}
-#searchButton{
-    position: absolute;
-    left: 25%;
-    font-size: 20px;
-    color: rgb(146, 143, 143);
 
+/* Leftmost vertical icon navigation */
+#leftIconNavbar {
+  width: 68px;
+  height: 100%;
+  background: #ffffff;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  flex-shrink: 0;
 }
-.separationLine{
-    background-color: rgb(127, 126, 126);
+
+.topNavIcons,
+.bottomNavIcons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.pendingIconWrapper {
+  position: relative;
+}
+
+.pendingIconWrapper .notificationIcon {
+  right: 4px;
+  top: 4px;
+}
+
+.navIcon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 20px;
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navIcon:hover {
+  background: #f1f5f9;
+  color: var(--text-main);
+}
+
+.navIcon.active {
+  background: #e2f2f0;
+  color: var(--accent-color);
+}
+
+@media (max-width: 900px) {
+  #leftIconNavbar {
+    display: none;
+  }
+}
+
+/* Connections sidebar styling */
+#chatsContentDiv {
+  width: 24%;
+  height: 100%;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebarTitleRow {
+  width: 100%;
+  padding: 24px 20px 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebarTitleRow h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+
+/* sidebarAddBtn removed */
+
+#addPlusSearch {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 20px;
+}
+
+#searchChatsWrapper {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+#searchingChats {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  outline: none;
+  border-radius: 10px;
+  color: var(--text-main);
+  width: 100%;
+  height: 100%;
+  padding-left: 38px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+#searchingChats:focus {
+  border-color: var(--accent-color);
+  background: #ffffff;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+#searchButton {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--text-sec);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.separationLineAndFriends {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+#allCurrFriendsDiv {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5px;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+/* Friend list elements */
+.eachSingleFriends {
+  cursor: pointer;
+  width: 92%;
+  height: 66px;
+  background-color: transparent;
+  border-bottom: 1px solid #f1f5f9;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  padding-inline: 15px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  gap: 12px;
+  position: relative;
+}
+
+.eachSingleFriends:hover {
+  background-color: #f8fafc;
+  border-bottom-color: #e2e8f0;
+}
+
+.eachSingleFriends.active {
+  background-color: #e2f2f0 !important;
+  border-bottom-color: transparent !important;
+}
+
+.eachSingleFriends.active .friendName {
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+.eachSingleFriends.active .friendBadge {
+  background: var(--accent-color);
+  color: white;
+}
+
+.avatarContainer {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.imageNameFirstLetterEach {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  color: var(--text-main);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.imageNameFirstLetterEach img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.onlineStatusDot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #ffffff;
+}
+
+.friendName {
+  flex-grow: 1;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: left;
+}
+
+.friendBadge {
+  font-size: 12px;
+  color: var(--accent-color);
+  font-weight: 700;
+  background: #e2f2f0;
+  padding: 2px 8px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+/* inBoxDiv removed */
+
+.notificationIcon {
+  background-color: #ef4444;
+  position: absolute;
+  right: 6%;
+  top: 6%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  animation: pulseGlow 1.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@media (max-width: 900px) {
+  #chatsContentDiv {
+    width: 35%;
+  }
+}
+
+@media (max-width: 600px) {
+  #chatsContentDiv {
+    width: 100%;
+    height: 100%;
+  }
+  .eachSingleFriends {
     width: 90%;
-    height: 0.1px;
-}
-.separationLineAndFriends{
-    width: 100%;
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-#allCurrFriendsDiv{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 10px;
-    gap: 10px;
-    overflow: scroll;
-}
-#allCurrFriendsDiv::-webkit-scrollbar{
-    display: none;
-}
-.eachSingleFriends{
-    cursor: pointer;
-    width: 416px;
-    height: 60px;
-    background-color: transparent;
-    border-bottom:1px solid #393939;
-    color:white;
-    position: relative;
-    flex-shrink: 0;
-}
-.eachSingleFriends:hover{
-    background-color: #38383B;
-    border-radius: 10px;
-}
-.imageNameFirstLetterEach{
-    width: 40px;
-    height: 40px;
-    background-color: #f4f4f4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-}
-@media (max-width:600px){
-    #chatsContentDiv{
-        width: 100%;
-        height: 100%;
-    }
-    .eachSingleFriends{
-        width: 90%;
-    }
-    #addPeopleButton{
-        width: 40px;
-        height: 40px;
-    }
-    #chatsContentDiv{
-        width: 100vw;
-        height: 92vh;
-    }
-}
-/* real chatting with user div info */
-.chattingDiv{
-    display: block;
-    width: 70%;
-    height: 100%;
-    background-image: url('../public/backImageCurr.svg');
-    background-color: #1e1e1e;
-    position: relative;
-}
-.topChattingCurrHappening{
-    width: 100%;
-    height: 10%;
-    /* position: relative; */
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-inline: 20px;
-    gap: 20px;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #1E1E1E;
-    color: white;
-    border-bottom: 1px solid #7f7e7e;
-}
-.imageANDname{
-    width: 80%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  }
+  #chatsContentDiv {
+    width: 100vw;
+    height: 92vh;
+  }
 }
 
-.arrow{
-    /* position: absolute; */
-    width: 30px;
-    height: 30px;
+/* Chat window area */
+.chattingDiv {
+  display: block;
+  flex-grow: 1;
+  height: 100%;
+  background-color: var(--bg-chat);
+  position: relative;
+}
+
+.topChattingCurrHappening {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-inline: 24px;
+  justify-content: space-between;
+  background-color: #ffffff;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.imageANDname {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arrow {
+  width: 30px;
+  height: 30px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--text-sec);
+  cursor: pointer;
+}
+
+.specificFriendsTalkingToFirstLetterImage {
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-gradient);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.specificFriendsTalkingTo {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-main);
+}
+
+.currChattingShowingDivMain {
+  width: 100%;
+  height: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.allChatsInDiv {
+  width: 100%;
+  padding-top: 20px;
+  padding-inline: 24px;
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 90px;
+}
+
+.eachTextDiv {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.eachTextDiv.mine {
+  justify-content: flex-end;
+}
+
+.eachTextDiv.others {
+  justify-content: flex-start;
+}
+
+.messageAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.eachTextDiv.mine .messageAvatar {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+}
+
+.eachTextDiv.others .messageAvatar {
+  background: var(--accent-gradient);
+}
+
+.mineText {
+  max-width: 60%;
+  background: #cbd5e1;
+  color: #0f172a;
+  position: relative;
+  word-break: break-word;
+  padding: 10px 16px;
+  border-radius: 16px 16px 2px 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  border: 1px solid #94a3b8;
+}
+
+.othersText {
+  max-width: 60%;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  position: relative;
+  word-break: break-word;
+  padding: 10px 16px;
+  border-radius: 16px 16px 16px 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.contentForZIndex {
+  z-index: 10;
+  width: 100%;
+}
+
+.typingDiv {
+  position: absolute;
+  bottom: 24px;
+  left: 5%;
+  width: 90%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 15px rgba(15,23,42,0.04);
+  padding-inline: 15px;
+}
+
+.typingInput {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+.sendIcon {
+  font-size: 18px;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.sendIcon:hover {
+  color: #0d9488;
+  transform: scale(1.08);
+}
+
+@media (max-width: 600px) {
+  .chattingDiv {
     display: none;
-    align-items: center;
-    justify-content: center;
-    /* top: 30%;
-    left:2%; */
-    font-size: 25px;
-    color: #c4c4c4;
-    cursor: pointer;
-}
-.specificFriendsTalkingToFirstLetterImage{
-   border-style: solid;
-   border-color: black;
-   border-width: 1px;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    /* position: absolute; */
-    /* top: 22%;
-    left: 8%; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.specificFriendsTalkingTo{
-    /* position: absolute; */
-    /* top: 35%;
-    left: 15%; */
-}
-.currChattingShowingDivMain{
-    width: 100%;
-    height: 90%;
-}
-.typingDiv{
     position: fixed;
-    bottom:2%;
-    width: 70%;
-    height: 7%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.typingInput{
-    width: 70%;
-    height: 100%;
-    border-radius: 15px;
-    border-width: 1px;
-    outline:none;
-    padding-left: 3%;   
-    background-color: white;
-    font-size: 17px;
-}
-.sendIcon{
-    position: absolute;
-    bottom: 50%;
-    left: 82%;
-    transform: translate(0,50%);
-    z-index: 100;
-    font-size: 20px;
-    cursor: pointer;
-}
-.allChatsInDiv{
-    width: 100%;
-    padding-top: 10px;
-    height: 86%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    align-items: center;
-    gap: 10px;    
-}
-.allChatsInDiv::-webkit-scrollbar{
-    display: none;
-}
-.eachTextDiv{
-    width: 80%;
-    display: flex;
-    justify-content: end;
-}
-.mineIndicator{
-    width: 0px;
-    height: 0px;
-    border-bottom: 10px solid transparent;
-    border-top: 10px solid #ECE9E9;
-    border-right: 10px solid transparent;
-    border-left: 10px solid transparent;
-    position: absolute;
-    right: -9px;
-}
-.mineText{
-    max-width: 100%;
-    background-color: #ECE9E9;
-    position: relative;
-    word-break: break-all;
-    border-radius: 10px;
-}
-.othersIndicator{
-    width: 0px;
-    height: 0px;
-    border-bottom: 10px solid transparent;
-    border-top: 10px solid #ECE9E9;
-    border-right: 10px solid #ECE9E9;
-    border-left: 10px solid transparent;
-    position: absolute;
-    left: -9px;
-}
-.contentForZIndex{
-    z-index: 700;
-    width: 100%;
-    padding: 10px;
-
-}
-
-@media (max-width:600px){
-    .chattingDiv{
-        display: none;
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-        left: 0;
-        top:0;
-        z-index: 10023;
-    }
-    .typingDiv{
-        width: 100%;
-    }
-    .specificFriendsTalkingToFirstLetterImage{
-        left:11%;
-    }
-    .specificFriendsTalkingTo{
-        left:30%;
-    }
-    .arrow{
-        display: flex;
-    }
-    .typingInput{
-        width: 90%;
-    }
-    
-}
-/* popUp Inbox */
-#containerPopUpOFInbox{
-    background-color: rgba(72, 72, 72, 0.398);
-    backdrop-filter: blur(10px);
-    position: absolute;
     width: 100vw;
     height: 100vh;
     left: 0;
     top: 0;
-    z-index: 1001;
-    display: none;
-    align-items: center;
-    justify-content: center; 
-}
-.pendingRequests{
-    background-color: #c7c7c7;
-    border-radius: 10px;
-    width: 25%;
-    height: 70%;
+    z-index: 10023;
+  }
+  .typingDiv {
+    width: 90%;
+    left: 5%;
+  }
+  .arrow {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  }
 }
 
-.requestsDiv{
-    height: 100%;
-    font-size: 20px;
+/* Right Details Sidebar */
+#rightDetailSidebar {
+  width: 23%;
+  min-width: 280px;
+  height: 100%;
+  background: #ffffff;
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  overflow-y: auto;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.sidebarCloseBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.sidebarCloseBtn:hover {
+  color: var(--accent-color);
+}
+
+.rightSidebarAvatarContainer {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.rightSidebarAvatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+}
+
+.onlineStatusDotLarge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2.5px solid #ffffff;
+}
+
+.rightSidebarName {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.rightSidebarTitle {
+  font-size: 12.5px;
+  color: var(--text-sec);
+  margin-bottom: 3px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.rightSidebarLoc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+
+.rightSidebarTime {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.rightSidebarTabs {
+  width: 100%;
+  border-bottom: 1px solid #cbd5e1;
+  display: flex;
+  gap: 20px;
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-sec);
+}
+
+.rightSidebarTabs span {
+  cursor: pointer;
+  padding-bottom: 6px;
+}
+
+.rightSidebarTabs span.activeTab {
+  color: var(--text-main);
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.rightSidebarPhotosGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.photoItem {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.photoItem:hover {
+  transform: scale(1.04);
+}
+
+
+
+/* Modals & Popups */
+#containerPopUpOFInbox, #containerPopUpOfNewFriends {
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1001;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.pendingRequests, .addRequestBoxDiv {
+  background: #ffffff;
+  border: var(--glass-border);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+  border-radius: 18px;
+  width: 25%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding-block: 20px;
+  color: var(--text-main);
+}
+
+.requestsDiv, .addNameNameDiv {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.requestsMainText, .addNameNameDiv {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  padding-inline: 25px;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.eachRequestDiv, .eachUsersOfAll {
+  width: 90%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  padding-inline: 15px;
+  flex-shrink: 0;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.imageDivRequest, .imageNameOfaddFriendsDiv {
+  width: 36px;
+  height: 36px;
+  background-color: #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.tick {
+  color: #0f766e;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.tick:hover {
+  transform: scale(1.1);
+}
+
+.cross {
+  color: #ef4444;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cross:hover {
+  transform: scale(1.1);
+}
+
+.reusablesReqDivs, .newFriendsActualDiv {
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.searchNewFriends {
+  width: 90%;
+  height: 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.inputSearchForNewFriends {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+  padding: 10px 15px;
+  background: #ffffff;
+  color: var(--text-main);
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.inputSearchForNewFriends:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.blackLineAfterSearchBox {
+  width: 90%;
+  height: 1px;
+  background-color: #cbd5e1;
+  margin-block: 10px;
+}
+
+.addFriendsImageAndNameDiv {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.newFriendsAddAddButton {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 20px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--accent-color);
+}
+
+.newFriendsAddAddButton:hover {
+  color: #14b8a6;
+  transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+  .pendingRequests, .addRequestBoxDiv {
+    width: 85%;
+  }
+}
+
+/* Settings Drawer */
+#settingsDrawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100vh;
+  background: #ffffff;
+  box-shadow: -10px 0 30px rgba(15, 23, 42, 0.08);
+  border-left: 1px solid var(--border-color);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 24px;
+  box-sizing: border-box;
+  visibility: hidden; /* controlled by GSAP */
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 35px;
+}
+
+.drawerHeader h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.drawerCloseBtn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.drawerCloseBtn:hover {
+  color: var(--accent-color);
+}
+
+.drawerProfileSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.drawerAvatar {
+  width: 80px;
+  height: 80px;
+  background: var(--accent-gradient);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.2);
+  margin-bottom: 16px;
+}
+
+.drawerName {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.drawerEmail {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.drawerOptionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.drawerOptionItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.drawerOptionItem i {
+  font-size: 18px;
+}
+
+.drawerOptionItem:hover {
+  background: #f1f5f9;
+  color: var(--text-main);
+}
+
+.drawerFooter {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.drawerLogoutBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #fee2e2;
+  background: #fff5f5;
+  color: #ef4444;
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drawerLogoutBtn:hover {
+  background: #fee2e2;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  #settingsDrawer {
+    width: 100%;
+  }
+}
+
+/* Remove Friend & Select Messages Button Styling */
+.removeFriendBtn {
+  margin: 15px 0 10px 0;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid #fee2e2;
+  background: #fff5f5;
+  color: #ef4444;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 90%;
+  justify-content: center;
+}
+
+.removeFriendBtn:hover {
+  background: #fee2e2;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+}
+
+.removeFriendBtn i {
+  font-size: 16px;
+}
+
+.selectMessagesBtn {
+  margin: 0 0 20px 0;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: var(--text-sec);
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 90%;
+  justify-content: center;
+}
+
+.selectMessagesBtn:hover {
+  background: #e2e8f0;
+  color: var(--text-main);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.selectMessagesBtn i {
+  font-size: 16px;
+}
+
+/* Chat message Selection Action Bar */
+.selectionActionBar {
+  width: 100%;
+  height: 50px;
+  background: #fff5f5;
+  border-bottom: 1px solid #fee2e2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 24px;
+  box-sizing: border-box;
+  animation: slideDown 0.2s ease-out;
+  flex-shrink: 0;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.selectionCount {
+  font-weight: 600;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.selectionActions {
+  display: flex;
+  gap: 12px;
+}
+
+.selectionBtn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.selectionBtn.cancel {
+  background: #f1f5f9;
+  color: var(--text-sec);
+}
+
+.selectionBtn.cancel:hover {
+  background: #e2e8f0;
+}
+
+.selectionBtn.delete {
+  background: #ef4444;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.selectionBtn.delete:hover {
+  background: #dc2626;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+/* Selection Checkboxes */
+.msgCheckboxContainer {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.eachTextDiv:hover .msgCheckboxContainer,
+.msgCheckboxContainer.visible {
+  display: flex;
+}
+
+.msgCheckbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid #cbd5e1;
+  accent-color: var(--accent-color);
+  cursor: pointer;
+}
+
+.rightSidebarActions {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+/* Mobile Header Dropdown Menu */
+.mobileHeaderDropdown {
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  width: 170px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+  animation: fadeInDropdown 0.15s ease-out;
+}
+
+@keyframes fadeInDropdown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownItem {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-sec);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropdownItem:hover {
+  background: #f1f5f9;
+  color: var(--text-main);
+}
+
+.dropdownItem i {
+  font-size: 16px;
+}
+
+.sidebarMobileMenuBtn {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .sidebarMobileMenuBtn {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.requestsMainText{
-    width: 100%;
-    height: 20%;
-    display: flex;
-    align-items: center;
-    padding-inline: 35px;
-    justify-content: space-between;
-}
-.eachRequestDiv{
-    width: 100%;
-    height: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-width:1px;
-    flex-shrink: 0;
-    background-color: #ededed;
-    border-bottom: 1px solid black;
-}
-.imageDivRequest{
-    width: 40px;
-    background-color: #d9d9d9;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: background-color 0.2s ease;
+  }
+  .sidebarMobileMenuBtn:hover {
+    background-color: rgba(15, 23, 42, 0.05);
+  }
 }
-.tick{
-    color: rgb(3, 225, 3);
-    font-size: 23px;
-}
-.cross{
-    color:rgb(255, 43, 43);
-    font-size:23px ;
-}
-.reusablesReqDivs{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: scroll;
-}
-.reusablesReqDivs::-webkit-scrollbar{
-    display: none;
-}
-@media (max-width:600px){
-    #containerPopUpOFInbox{
-        width: 100vw;
-        height: 92.5vh;
-    }
-    .pendingRequests{
-        width: 80%;
-    }
-}
-/* for  adding  new friends */
-#containerPopUpOfNewFriends{
-    background-color: rgba(72, 72, 72, 0.398);
-    backdrop-filter: blur(10px);
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    left: 0;
-    top: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1001;
-}
-.addRequestBoxDiv{
-    background-color: white;
-    border-radius: 10px;
-    width: 25%;
-    height: 70%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-}
-.addNameNameDiv{
-    width: 100%;
-    height: 20%;
-    display: flex;    
-    align-items: center;
-    padding-inline: 30px;
-    justify-content: space-between;
-    font-size: 20px;
 
+.sidebarMobileDropdown {
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  width: 190px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+  animation: fadeInDropdown 0.15s ease-out;
 }
-.searchNewFriends{
-    width: 100%;
-    height: 20%;
-    background-color: #d9d9d9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+/* Empty chat state styling */
+.emptyChatContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  padding: 40px 24px;
+  box-sizing: border-box;
+  background-color: var(--bg-chat);
 }
-.inputSearchForNewFriends{
-    width: 80%;
-    height: 50%;
-    border-radius: 20px;
-    border:none;
-    outline: none;
-    padding:10px
+
+.emptyChatImage {
+  width: 260px;
+  height: auto;
+  margin-bottom: 24px;
+  opacity: 0.95;
 }
-.blackLineAfterSearchBox{
-    width: 100%;
-    height: 1px;
-    background-color: black;
-    margin: 10px;
+
+.emptyChatTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 10px;
 }
-.newFriendsActualDiv{
-    width: 100%;
-    height: 84%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: scroll;
-}
-.newFriendsActualDiv::-webkit-scrollbar{
-    display: none;
-}
-.eachUsersOfAll{
-    width: 100%;
-    height: 20%;
-    background-color: #ededed;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-shrink: 0;
-    border-bottom: 1px solid #c4c4c4;
-}
-.addFriendsImageAndNameDiv{
-    width:40%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    font-size:18px;
-}
-.imageNameOfaddFriendsDiv{
-     background-color: #d9d9d9;
-     font-size:20px;
-     width:50px;
-     height:50px;
-     display:flex;
-     align-items:center;
-     justify-content:center;
-     border-radius:50%;
-}
-.newFriendsAddAddButton{
-    width:30%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:end;
-    font-size:25px;
-    font-weight: 200;
-}
-.aligningNameInAllUsers{
-    width: 50%;
-}
-@media (max-width:600px){
-    #containerPopUpOfNewFriends{
-        width: 100vw;
-        height: 92.5vh;
-    }
-    .addRequestBoxDiv{
-        width: 80%;
-    }
+
+.emptyChatSubtitle {
+  font-size: 14px;
+  color: var(--text-sec);
+  max-width: 340px;
+  line-height: 1.6;
 }

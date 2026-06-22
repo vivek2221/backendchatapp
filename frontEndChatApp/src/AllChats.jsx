@@ -46,32 +46,24 @@ function AllChats(){
             duration:0.3,
         })
      })
-     const ImagePopUp=contextSafe((e)=>{
-        gsap.to('#imageOfNameDiv',{
-            x:'-100px',
-            duration:1,
-        })
-        gsap.to('#dropDown',{
-            display:'flex',
-            opacity:1,
-            duration:0.5,
-            delay:0.6,
-            ease: "ease.in"
-        })
+
+     const toggleDrawer = contextSafe((e)=>{
+        setDrawerOpen(prev => !prev)
      })
-     const ImagePopClose=contextSafe((e)=>{
-        gsap.to('#dropDown',{
-            display:'none',
-            opacity:0,
-            duration:1,
-            delay:0.1,
-            ease: "ease.in"
-        })
-        gsap.to('#imageOfNameDiv',{
-            x:'0',
-            duration:1,
-        })
-     })
+     const handleRemoveFriend = () => {
+        if (!ws || !currTalkingName || currTalkingName === 'Viver') return
+        ws.send(JSON.stringify({ kindOf: 'removeFriend', from: name, to: currTalkingName }))
+        setCurrTalkingName('Viver')
+        setContentTexts([])
+        if (window.innerWidth <= 600) {
+            phoneDisplayGoneOnButtonClick()
+        }
+     }
+     const handleDeleteChat = (msgIds, deleteType = 'everyone') => {
+        if (!ws || !currTalkingName || currTalkingName === 'Viver') return
+        const idsArray = Array.isArray(msgIds) ? msgIds : [msgIds]
+        ws.send(JSON.stringify({ kindOf: 'deletingChat', msgIds: idsArray, deleteType, from: name, to: currTalkingName }))
+     }
      const popUpNewFriendsSearchBoxClose=contextSafe((e)=>{
         gsap.to('#allChatsMainDiv #containerPopUpOfNewFriends',{
             display:'none',
@@ -90,15 +82,82 @@ function AllChats(){
     const [pendingToMe,setPendingToMe]=useState([])
     const [allUsersData,setAllUsersData]=useState([])
     const [notification,setNotification]=useState('none')
+    const [drawerOpen, setDrawerOpen] = useState(false)
+    const settingsDrawerRef = useRef()
     const [allFriendsData,setAllFriendsData]=useState([])
     const [contentTexts,setContentTexts]=useState([])
+    const [selectedMsgIds, setSelectedMsgIds] = useState([])
+    const [isSelectionModeActive, setIsSelectionModeActive] = useState(false)
+    const [isDetailSidebarOpen, setIsDetailSidebarOpen] = useState(false)
+    const [unreadCounts, setUnreadCounts] = useState(() => {
+        const saved = localStorage.getItem(`unreadCounts_${name}`)
+        return saved ? JSON.parse(saved) : {}
+    })
+    useEffect(() => {
+        setSelectedMsgIds([])
+        setIsSelectionModeActive(false)
+        setIsDetailSidebarOpen(false)
+    }, [currTalkingName])
+    useEffect(() => {
+        if (name) {
+            localStorage.setItem(`unreadCounts_${name}`, JSON.stringify(unreadCounts))
+        }
+    }, [unreadCounts, name])
+    useEffect(() => {
+        if (currTalkingName && currTalkingName !== 'Viver') {
+            setUnreadCounts(prev => {
+                if (prev[currTalkingName] === 0) return prev
+                return {
+                    ...prev,
+                    [currTalkingName]: 0
+                }
+            })
+        }
+    }, [currTalkingName])
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    useEffect(() => {
+        if (!isMobileMenuOpen) return
+        const closeMenu = () => setIsMobileMenuOpen(false)
+        window.addEventListener('click', closeMenu)
+        return () => window.removeEventListener('click', closeMenu)
+    }, [isMobileMenuOpen])
+    const handleMobileMenuClick = (e) => {
+        e.stopPropagation()
+        setIsMobileMenuOpen(prev => !prev)
+    }
     const [displayOfTextForPhone,setDisplayOfTextForPhone]=useState('none')
     const [webRunFirstTime,setWebRunFirstTime]=useState(0)
-    const [logoutDisplay,setLogoutDisplay]=useState(0)
     const helper=useRef(currTalkingName)
     useEffect(() => {
     helper.current = currTalkingName
 }, [currTalkingName])
+    useEffect(() => {
+        if (drawerOpen) {
+            gsap.killTweensOf(settingsDrawerRef.current)
+            gsap.set(settingsDrawerRef.current, { visibility: 'visible' })
+            gsap.to(settingsDrawerRef.current, {
+                x: 0,
+                duration: 0.5,
+                ease: 'power3.out'
+            })
+            gsap.fromTo(
+                settingsDrawerRef.current.querySelectorAll('.animate-settings-el'),
+                { x: 50, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.4, stagger: 0.08, delay: 0.1, ease: 'power2.out' }
+            )
+        } else {
+            gsap.killTweensOf(settingsDrawerRef.current)
+            gsap.to(settingsDrawerRef.current, {
+                x: '100%',
+                duration: 0.4,
+                ease: 'power3.in',
+                onComplete: () => {
+                    gsap.set(settingsDrawerRef.current, { visibility: 'hidden' })
+                }
+            })
+        }
+    }, [drawerOpen])
+
     useEffect(()=>{
     let socket=new WebSocket(import.meta.env.VITE_WEBSOCKET_URL)
     socket.onopen=()=>{
@@ -124,7 +183,38 @@ function AllChats(){
         }
         else if(msgData.kindOf==='chatMessage'){
             if(msgData.from===helper.current){
-              setContentTexts(prev=>([...prev,{from:'others',textData:msgData.msg}]))
+              setContentTexts(prev=>([...prev,{
+                  id: msgData.id,
+                  from: 'others',
+                  textData: msgData.msg,
+                  isDeleted: msgData.isDeleted || false
+              }]))
+            } else {
+              setUnreadCounts(prev => ({
+                  ...prev,
+                  [msgData.from]: (prev[msgData.from] || 0) + 1
+              }))
+            }
+        }
+        else if (msgData.kindOf === 'messageSentAck') {
+            setContentTexts(prev => prev.map(m => m.tempId === msgData.tempId ? { ...m, id: msgData.id } : m))
+        }
+        else if (msgData.kindOf === 'chatMessagesDeleted') {
+            const deletedIds = msgData.msgIds || []
+            const deleteType = msgData.deleteType || 'everyone'
+            if (deleteType === 'me') {
+                setContentTexts(prev => prev.filter(m => !deletedIds.includes(m.id)))
+            } else {
+                setContentTexts(prev => prev.map(m => deletedIds.includes(m.id) ? { ...m, isDeleted: true, textData: 'This message was deleted' } : m))
+            }
+        }
+        else if (msgData.kindOf === 'friendRemoved') {
+            if (helper.current === msgData.from) {
+                setCurrTalkingName('Viver')
+                setContentTexts([])
+                if (window.innerWidth <= 600) {
+                    phoneDisplayGoneOnButtonClick()
+                }
             }
         }
         else if(msgData.kindOf==='reLogin'){
@@ -140,22 +230,121 @@ function AllChats(){
   }
     },[])
     return (
-        <contextForWebsocket.Provider value={{phoneDisplayGoneOnButtonClick,phoneDisplayRealChat,findingSomeOne,setFindingSomeOne,searchingFriends,setSearchingFriends,contentTexts,setContentTexts,currTalkingName,setCurrTalkingName,ws,allFriendsData,name,setChangeState,pendingToMe,changeState,allUsersData}}>
+        <contextForWebsocket.Provider value={{phoneDisplayGoneOnButtonClick,phoneDisplayRealChat,findingSomeOne,setFindingSomeOne,searchingFriends,setSearchingFriends,contentTexts,setContentTexts,currTalkingName,setCurrTalkingName,ws,allFriendsData,name,setChangeState,pendingToMe,changeState,allUsersData,handleDeleteChat,selectedMsgIds,setSelectedMsgIds,isSelectionModeActive,setIsSelectionModeActive,isDetailSidebarOpen,setIsDetailSidebarOpen,handleRemoveFriend,unreadCounts,setUnreadCounts}}>
             <Toaster />
-        <div id="allChatsMainDiv"  ref={container} onMouseMove={(e)=>{
-            if(logoutDisplay==1){
-                ImagePopClose()
-                setLogoutDisplay(0)
-            }
-        }}>
+        <div id="allChatsMainDiv" ref={container}>
             <div id="topNavbarDiv">
-                <div id="imageLogoTopNavbarDiv"><img src="Vwhite.svg" style={{width:'50%',height:'50%'}}></img></div>
-                 <div id="dropDown" onMouseMove={(e)=>{
-                    e.stopPropagation()
-                 }}>
-                    <div style={{width:'50%',color:'#121212'}}>a</div>
-                    <div  style={{width:'30%'}}>{name}</div>
-                    <div id="logoutButton"><img src="./logout.svg" style={{width:'20px',height:'20px'}} onClick={(e)=>{
+                <div id="imageLogoTopNavbarDiv" style={{display:'flex',alignItems:'center'}}>
+                    <img src="ViverLogo.svg" style={{height:'28px'}} alt="Viver Logo" />
+                </div>
+                <div id="imageOfNameDiv" title={name}>{name[0].toUpperCase()}</div>
+            </div>
+            <div id="chattingInfoParentDiv">
+                {/* Leftmost thin icon nav bar */}
+                <div id="leftIconNavbar">
+                    <div className="topNavIcons">
+                        <div className="navIcon active" title="Home"><i className="ri-home-5-fill"></i></div>
+                        <div className="navIcon" onClick={popUpNewFriendsSearchBox} title="Add Friend"><i className="ri-user-add-line"></i></div>
+                        <div className="navIcon pendingIconWrapper" onClick={popUpInbox} title="Pending Requests">
+                            <i className="ri-mail-unread-line"></i>
+                            <div className="notificationIcon" style={{display:notification}}></div>
+                        </div>
+                    </div>
+                    <div className="bottomNavIcons">
+                        <div className="navIcon" onClick={toggleDrawer} title="Settings"><i className="ri-settings-4-line"></i></div>
+                    </div>
+                </div>
+                
+                {/* Connections sidebar */}
+                <div id="chatsContentDiv">
+                    <div className="sidebarTitleRow" style={{ position: 'relative' }}>
+                        <h2>Connections</h2>
+                        <div className="sidebarMobileMenuBtn" onClick={handleMobileMenuClick} style={{ cursor: 'pointer' }}>
+                            <i className="ri-more-2-fill" style={{ fontSize: '20px', color: '#0F9F91' }}></i>
+                        </div>
+                        {isMobileMenuOpen && (
+                            <div className="sidebarMobileDropdown">
+                                <div className="dropdownItem" onClick={() => {
+                                    toggleDrawer()
+                                    setIsMobileMenuOpen(false)
+                                }}>
+                                    <i className="ri-settings-4-line"></i> Settings
+                                </div>
+                                <div className="dropdownItem" onClick={() => {
+                                    popUpNewFriendsSearchBox()
+                                    setIsMobileMenuOpen(false)
+                                }}>
+                                    <i className="ri-user-add-line"></i> Add Friend
+                                </div>
+                                <div className="dropdownItem" onClick={() => {
+                                    popUpInbox()
+                                    setIsMobileMenuOpen(false)
+                                }}>
+                                    <i className="ri-mail-unread-line"></i> Pending Requests
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <div id="addPlusSearch">
+                        <div id="searchChatsWrapper">
+                            <SearchChats/>
+                            <div id="searchButton"><i className="ri-search-line"></i></div>
+                        </div>
+                    </div>
+                    <div className="separationLineAndFriends">
+                        <AllFriends />
+                    </div>
+                </div>
+                
+                {/* Chat Panel */}
+                <RealChat/>
+
+                {/* Right profile detail sidebar */}
+                {currTalkingName !== 'Viver' && isDetailSidebarOpen && (
+                    <div id="rightDetailSidebar">
+                        <button className="sidebarCloseBtn" onClick={() => setIsDetailSidebarOpen(false)}>
+                            <i className="ri-close-line"></i>
+                        </button>
+                        <div className="rightSidebarAvatarContainer">
+                            <div className="rightSidebarAvatar">
+                                {currTalkingName[0].toUpperCase()}
+                            </div>
+                            <span className="onlineStatusDotLarge"></span>
+                        </div>
+                        <div className="rightSidebarName">{currTalkingName}</div>
+                        
+                        <div className="rightSidebarActions">
+                            <button className="removeFriendBtn" onClick={handleRemoveFriend}>
+                                <i className="ri-user-unfollow-line"></i> Remove Friend
+                            </button>
+                            <button className="selectMessagesBtn" onClick={() => setIsSelectionModeActive(true)}>
+                                <i className="ri-checkbox-multiple-line"></i> Select Messages
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <PendingRequestsInbox onClickFunc={popUpInboxClose} />
+            <PopUpForAllUsers closePopUp={popUpNewFriendsSearchBoxClose}/>
+            
+            {/* Settings Drawer */}
+            <div id="settingsDrawer" ref={settingsDrawerRef} style={{ transform: 'translateX(100%)' }}>
+                <div className="drawerHeader animate-settings-el">
+                    <h3>Settings</h3>
+                    <button className="drawerCloseBtn" onClick={() => setDrawerOpen(false)}>
+                        <i className="ri-close-line"></i>
+                    </button>
+                </div>
+                <div className="drawerProfileSection">
+                    <div className="drawerAvatar animate-settings-el">
+                        {name ? name[0].toUpperCase() : ''}
+                    </div>
+                    <h2 className="drawerName animate-settings-el">{name}</h2>
+                    <p className="drawerEmail animate-settings-el">Active Member</p>
+                </div>
+
+                <div className="drawerFooter animate-settings-el">
+                    <button className="drawerLogoutBtn" onClick={(e)=>{
                         fetch(`${import.meta.env.VITE_URL_SERVER}/logout`,{
                             method:'DELETE',
                             credentials:'include'
@@ -165,37 +354,12 @@ function AllChats(){
                                 navigate('/')
                             }
                         })
-                    }}></img>
-                    </div>
+                    }}>
+                        <i className="ri-logout-box-r-line"></i>
+                        <span>Log Out</span>
+                    </button>
                 </div>
-                 <div id="imageOfNameDiv" onMouseMove={(e)=>{
-                    e.stopPropagation()
-                    ImagePopUp()
-                    setLogoutDisplay(1)
-                    }}>{name[0].toUpperCase()}</div>
             </div>
-            <div id="chattingInfoParentDiv">
-                <div id="chatsContentDiv">
-                    <div id="addPlusSearch">
-                        <div id="addPeopleButton" onClick={popUpNewFriendsSearchBox}>
-                            <i className="ri-user-add-line"></i>
-                            </div>
-                        <SearchChats/>
-                        <div id="searchButton"><i className="ri-search-line"></i></div>
-                    </div>
-                    <div className="separationLineAndFriends">
-                        <div className="separationLine"></div>
-                        <AllFriends />
-                        <div className="inBoxDiv" onClick={popUpInbox}>
-                            <i className="ri-mail-unread-line"></i>
-                            <div className="notificationIcon" style={{display:notification}}></div>
-                            </div>
-                    </div>
-                </div>
-                <RealChat/>
-            </div>
-            <PendingRequestsInbox onClickFunc={popUpInboxClose} />
-            <PopUpForAllUsers closePopUp={popUpNewFriendsSearchBoxClose}/>
         </div>
         </contextForWebsocket.Provider>
     )

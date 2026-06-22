@@ -7,6 +7,12 @@ const secure=(process.env.SECURE==='true')
 const server = express.Router()
 server.post('/',async(req,res)=>{
      const cookies=req.signedCookies.sid
+     if (cookies) {
+         const findingsid=await ModelSid.findOne({_id:cookies})
+         if(findingsid){
+            return res.json({mess:'go',name:findingsid.name})
+         }
+     }
      const {email:Email,password:Password}=req.body
      let email=emailSchema.safeParse(Email)
      let password=passwordSchema.safeParse(Password)
@@ -17,11 +23,6 @@ server.post('/',async(req,res)=>{
      else{
       return res.status(401).json({mess:'invalid Credentials'})
      }
-     const findingsid=await ModelSid.findOne({_id:cookies})
-     if(findingsid){
-        return res.json({mess:'go',name:findingsid.name})
-     }
-     else{
         const found = await ModelNormal.findOne({email,password}) || await ModelGoogle.findOne({email,password})
         if(found){
          const whereFinded=await ModelNormal.findOne({email,password})
@@ -40,7 +41,6 @@ server.post('/',async(req,res)=>{
     else{
         return res.json({mess:'invalid credentials'})
     }
-     }
 })
 
 export default server

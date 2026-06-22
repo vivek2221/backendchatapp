@@ -53,6 +53,14 @@ const dataAllSchema=new mongoose.Schema({
         type:Date,
         default:Date.now,
         expires:60 * 60 * 24 * 3 
+    },
+    isDeleted:{
+        type:Boolean,
+        default:false
+    },
+    deletedFor:{
+        type:[String],
+        default:[]
     }
 })
 const ModelGoogle= mongoose.model('googleLogin',GoogleLoginSchema)

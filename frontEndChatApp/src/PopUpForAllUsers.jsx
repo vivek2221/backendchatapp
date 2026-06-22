@@ -33,9 +33,9 @@ function PopUpForAllUsers({closePopUp}){
                     </div>
                     <div className="newFriendsActualDiv">
                         {allUsersData.filter((ele) => 
-                            ele.toLowerCase().includes(findingSomeOne.toLowerCase())
+                            ele.name.toLowerCase().includes(findingSomeOne.toLowerCase())
                         ).map((ele,index)=>{
-                            return <AllUsers key={index} name={ele}/>
+                            return <AllUsers key={index} name={ele.name} status={ele.status}/>
                         })}
                     </div>
                 </div>

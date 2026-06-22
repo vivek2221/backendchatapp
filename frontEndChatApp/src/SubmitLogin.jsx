@@ -105,11 +105,6 @@ function SubLogin({Type}){
         .then(data=>data.json())
         .then((data)=>{
             if(data.mess==='reLogin'){
-                const ws=new WebSocket(import.meta.env.VITE_WEBSOCKET_URL)
-                ws.onopen=()=>{
-                ws.send(JSON.stringify({kindOf:'newLogin',mineName:values.name}))
-                ws.close()
-                }
                 navigate('/')
             }
             else if(data.mess==='go' && Type==='signIn'){
