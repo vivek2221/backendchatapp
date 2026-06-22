@@ -74,7 +74,7 @@ server.on('connection',async(ws,req)=>{
         const data=await allUsersData(valueMain)
         ws.send(JSON.stringify({kindOf:'allUsersData',data}))
     }
-    else if(kindOf==='allFriendsToMe'){
+    else if(kindOf==='allFriendsToMe'){  
         if(!real.sid){
          throw new Error("sid not found")
         }
