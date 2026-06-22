@@ -1,10 +1,16 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import contextForWebsocket from "./websocketContent.jsx"
 
 
 function AllUsers({name, status}){
     const {ws,name:mineName}=useContext(contextForWebsocket)
     const [localPending, setLocalPending] = useState(status === 'pending_sent')
+
+    // Sync localPending whenever the parent updates the status prop
+    // (e.g. after removing a friend the status goes back to 'none')
+    useEffect(() => {
+        setLocalPending(status === 'pending_sent')
+    }, [status])
 
     const onClickButtonAdd=()=>{
         if (status === 'friend' || status === 'pending_sent' || localPending) return
