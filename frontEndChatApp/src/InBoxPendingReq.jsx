@@ -14,9 +14,6 @@ function PendingRequestsInbox({onClickFunc}){
          ws.send(JSON.stringify({kindOf:'pendingReqsForMe',from:name}))      
             }
         }
-        return ()=>{
-            ws.close()
-        }
     },[ws])
     return (
         <div id="containerPopUpOFInbox"  onClick={onClickFunc}>

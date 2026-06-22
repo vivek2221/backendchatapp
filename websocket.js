@@ -35,141 +35,193 @@ const app=express();
 const httpServer=createServer(app);
 const server=new WebSocketServer({server:httpServer});
 const storing={}
-server.on('connection',async(ws,req)=>{
-    const cookies=req.headers.cookie
-    const real=cookie.parse(cookies || '')
-    if(real.sid){
-    const signed=real.sid
-    const value =signed.slice(2)
-    const reavalue=signature.unsign(value,process.env.SECRET)
-    console.log(reavalue,reavalue.slice(2))
-    const ssidValidation=await ModelSid.findOne({_id:reavalue})
-    if(ssidValidation==null){
-     ws.send(JSON.stringify({kindOf:'reLogin'}))
-     return ws.terminate()
-    }
-    else{
-    const CurrSessionToRemoveFromSocket=await ModelSid.findOne({_id:{$ne:[ssidValidation.id]},someId:ssidValidation.someId})
-    if (CurrSessionToRemoveFromSocket && storing[CurrSessionToRemoveFromSocket.id]) {
-    const oldSocket = storing[CurrSessionToRemoveFromSocket.id];
-    if (oldSocket.readyState === WebSocket.OPEN) {
-        oldSocket.send(JSON.stringify({ kindOf: 'reLogin' }));
-    }
-    oldSocket.terminate();
-    delete storing[CurrSessionToRemoveFromSocket.id];
-}
-    storing[reavalue]=ws
-    ws.on('close', () => {
-    delete storing[reavalue]
-    })}
-}
-    ws.on('message',async(msg)=>{
-        const valueMain=JSON.parse(msg.toString())
-        const {kindOf}=valueMain
-        try{
-    if(kindOf==='allUsersData'){
-        if(!real.sid){
-         throw new Error("sid not found")
-        }
-        const data=await allUsersData(valueMain)
-        ws.send(JSON.stringify({kindOf:'allUsersData',data}))
-    }
-    else if(kindOf==='allFriendsToMe'){  
-        if(!real.sid){
-         throw new Error("sid not found")
-        }
-         allFriendsToMe(valueMain.from,ws)
-    }
-       else if(kindOf==='addReq'){
-        if(!real.sid){
-         throw new Error("sid not found")
-        }
-        const previousConnectionIfExists=await Modelconnections.findOne({$or:[{a:valueMain.to,b:valueMain.from},{a:valueMain.from,b:valueMain.to}]})
-        if(previousConnectionIfExists){
-            ws.send(JSON.stringify({mess:'already a Friend'}))
-        }
-        else{
-        const alreadySendReq=await ModelPendingReq.findOne({from:valueMain.from,to:valueMain.to})
-        if(alreadySendReq){
-           ws.send(JSON.stringify({mess:"already send the request"}))
-        }
-        else{
-        await ModelPendingReq.create({from:valueMain.from,to:valueMain.to})
-        const findforWhom=await ModelNormal.findOne({name:valueMain.to}) || await ModelGoogle.findOne({name:valueMain.to})
-        if(findforWhom){
-            const ssidOfthatUser=await ModelSid.findOne({someId:findforWhom.id})
-            if(ssidOfthatUser){
-                const CurrSocketssid=storing[ssidOfthatUser.id.toString()]
-                if(CurrSocketssid!==undefined){
-                    let allPendingsForOtherOne=await ModelPendingReq.find({to:valueMain.to})
-                    allPendingsForOtherOne = allPendingsForOtherOne.map((ele)=>{
-                        return ele.from})
-                    CurrSocketssid.send(JSON.stringify({kindOf:"pendingsToMe",data:allPendingsForOtherOne}))
-                }
-            }
-        }}}
-        }
-        else if(kindOf==='ack'){
-            if(!real.sid){
-         throw new Error("sid not found")
-        }
-        const checkExists=await ModelPendingReq.findOne({from:valueMain.from,to:valueMain.to})
-        if(checkExists){
-            const aId=await ModelNormal.findOne({name:valueMain.from}) || await ModelGoogle.findOne({name:valueMain.from})
-            const bId=await ModelNormal.findOne({name:valueMain.to}) || await ModelGoogle.findOne({name:valueMain.to})
-            await Modelconnections.create({a:valueMain.from,b:valueMain.to,aId:aId,bId:bId})
-            await ModelPendingReq.deleteMany({from:valueMain.to,to:valueMain.from})
-            await ModelPendingReq.deleteMany({from:valueMain.from,to:valueMain.to})
-                 allFriendsToMe(valueMain.to,ws)
-                 const  ssidOtherUser = await ModelSid.findOne({someId:aId.id})
-                if(ssidOtherUser){
-                    let socketOfOther=storing[ssidOtherUser.id]
-                    allFriendsToMe(valueMain.from,socketOfOther)
-                }
-            }
-            
-        }
-        else if(kindOf==='chat'){
-            if(!real.sid){
-         throw new Error("sid not found")
-        }
-        try{
-                const idFinding=await Modelconnections.findOne({a:valueMain.from,b:valueMain.to}) || await Modelconnections.findOne({a:valueMain.to,b:valueMain.from})
-                const opsTime=await ModelDataAll.insertOne({searchId:idFinding.id,msg:valueMain.input,from:valueMain.from,to:valueMain.to})
-                const toIdSid= await ModelSid.findOne({name:valueMain.to})
-                if(storing[toIdSid.id]){
-                storing[toIdSid.id].send(JSON.stringify({kindOf:'chatMessage',msg:valueMain.input,from:valueMain.from,timeAt:opsTime.timeAT}))
-                }
-        }
-            catch(err){
-                console.log("err",err)
-            }
-        }
-        else if(kindOf==='pendingReqsForMe'){
-            if(!real.sid){
-         throw new Error("sid not found")
-        }
-           let allPendingsForMe=await ModelPendingReq.find({to:valueMain.from})
-           allPendingsForMe = allPendingsForMe.map((ele)=>{
-           return ele.from})
-           ws.send(JSON.stringify({kindOf:"pendingsToMe",data:allPendingsForMe}))
-        }
-        else if(kindOf==='newLogin'){
-            for(let [key,value] of Object.entries(storing)){
-               if(value===ws){
-                continue
-               }
-               let name=await ModelSid.findOne({someId:key})
-               let valueMain={mineName:name}
-               let data=await allUsersData(valueMain)
-               storing[key].send(JSON.stringify({kindOf:'allUsersData',data}))
-            }
-        }
-        }catch(err){
-          ws.send(JSON.stringify({kindOf:'reLogin'}))
-          }
-     })
+server.on('connection', (ws, req) => {
+    const cookies = req.headers.cookie
+    const real = cookie.parse(cookies || '')
+    
+    let isAuthenticated = false
+    const messageQueue = []
+    let sessionKey = null
 
+    const handleMessage = async (msg) => {
+        try {
+            const valueMain = JSON.parse(msg.toString())
+            const { kindOf } = valueMain
+            
+            if (kindOf === 'allUsersData') {
+                if (!real.sid) {
+                    throw new Error("sid not found")
+                }
+                const data = await allUsersData(valueMain)
+                ws.send(JSON.stringify({ kindOf: 'allUsersData', data }))
+            }
+            else if (kindOf === 'allFriendsToMe') {  
+                if (!real.sid) {
+                    throw new Error("sid not found")
+                }
+                allFriendsToMe(valueMain.from, ws)
+            }
+            else if (kindOf === 'addReq') {
+                if (!real.sid) {
+                    throw new Error("sid not found")
+                }
+                const previousConnectionIfExists = await Modelconnections.findOne({ $or: [{ a: valueMain.to, b: valueMain.from }, { a: valueMain.from, b: valueMain.to }] })
+                if (previousConnectionIfExists) {
+                    ws.send(JSON.stringify({ mess: 'already a Friend' }))
+                }
+                else {
+                    const alreadySendReq = await ModelPendingReq.findOne({ from: valueMain.from, to: valueMain.to })
+                    if (alreadySendReq) {
+                        ws.send(JSON.stringify({ mess: "already send the request" }))
+                    }
+                    else {
+                        await ModelPendingReq.create({ from: valueMain.from, to: valueMain.to })
+                        const findforWhom = await ModelNormal.findOne({ name: valueMain.to }) || await ModelGoogle.findOne({ name: valueMain.to })
+                        if (findforWhom) {
+                            const ssidOfthatUser = await ModelSid.findOne({ someId: findforWhom.id })
+                            if (ssidOfthatUser) {
+                                const CurrSocketssid = storing[ssidOfthatUser.id.toString()]
+                                if (CurrSocketssid !== undefined) {
+                                    let allPendingsForOtherOne = await ModelPendingReq.find({ to: valueMain.to })
+                                    allPendingsForOtherOne = allPendingsForOtherOne.map((ele) => {
+                                        return ele.from
+                                    })
+                                    CurrSocketssid.send(JSON.stringify({ kindOf: "pendingsToMe", data: allPendingsForOtherOne }))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (kindOf === 'ack') {
+                if (!real.sid) {
+                    throw new Error("sid not found")
+                }
+                const checkExists = await ModelPendingReq.findOne({ from: valueMain.from, to: valueMain.to })
+                if (checkExists) {
+                    const aId = await ModelNormal.findOne({ name: valueMain.from }) || await ModelGoogle.findOne({ name: valueMain.from })
+                    const bId = await ModelNormal.findOne({ name: valueMain.to }) || await ModelGoogle.findOne({ name: valueMain.to })
+                    await Modelconnections.create({ a: valueMain.from, b: valueMain.to, aId: aId, bId: bId })
+                    await ModelPendingReq.deleteMany({ from: valueMain.to, to: valueMain.from })
+                    await ModelPendingReq.deleteMany({ from: valueMain.from, to: valueMain.to })
+                    
+                    // Send updated pending requests list to the user accepting the request
+                    let allPendingsForMe = await ModelPendingReq.find({ to: valueMain.to })
+                    allPendingsForMe = allPendingsForMe.map((ele) => {
+                        return ele.from
+                    })
+                    ws.send(JSON.stringify({ kindOf: "pendingsToMe", data: allPendingsForMe }))
+
+                    allFriendsToMe(valueMain.to, ws)
+                    const ssidOtherUser = await ModelSid.findOne({ someId: aId.id })
+                    if (ssidOtherUser) {
+                        let socketOfOther = storing[ssidOtherUser.id]
+                        if (socketOfOther) {
+                            allFriendsToMe(valueMain.from, socketOfOther)
+                        }
+                    }
+                }
+            }
+            else if (kindOf === 'chat') {
+                if (!real.sid) {
+                    throw new Error("sid not found")
+                }
+                try {
+                    const idFinding = await Modelconnections.findOne({ a: valueMain.from, b: valueMain.to }) || await Modelconnections.findOne({ a: valueMain.to, b: valueMain.from })
+                    const opsTime = await ModelDataAll.insertOne({ searchId: idFinding.id, msg: valueMain.input, from: valueMain.from, to: valueMain.to })
+                    const toIdSid = await ModelSid.findOne({ name: valueMain.to })
+                    if (toIdSid && storing[toIdSid.id]) {
+                        storing[toIdSid.id].send(JSON.stringify({ kindOf: 'chatMessage', msg: valueMain.input, from: valueMain.from, timeAt: opsTime.timeAT }))
+                    }
+                }
+                catch (err) {
+                    console.log("err", err)
+                }
+            }
+            else if (kindOf === 'pendingReqsForMe') {
+                if (!real.sid) {
+                    throw new Error("sid not found")
+                }
+                let allPendingsForMe = await ModelPendingReq.find({ to: valueMain.from })
+                allPendingsForMe = allPendingsForMe.map((ele) => {
+                    return ele.from
+                })
+                ws.send(JSON.stringify({ kindOf: "pendingsToMe", data: allPendingsForMe }))
+            }
+            else if (kindOf === 'newLogin') {
+                for (let [key, value] of Object.entries(storing)) {
+                    if (value === ws) {
+                        continue
+                    }
+                    let name = await ModelSid.findOne({ someId: key })
+                    let valueMain = { mineName: name }
+                    let data = await allUsersData(valueMain)
+                    storing[key].send(JSON.stringify({ kindOf: 'allUsersData', data }))
+                }
+            }
+        } catch (err) {
+            ws.send(JSON.stringify({ kindOf: 'reLogin' }))
+        }
+    }
+
+    // Attach message listener synchronously so we never miss incoming frames
+    ws.on('message', (msg) => {
+        if (!isAuthenticated) {
+            messageQueue.push(msg)
+        } else {
+            handleMessage(msg)
+        }
+    })
+
+    // Perform asynchronous database lookup for authentication
+    ;(async () => {
+        try {
+            if (real.sid) {
+                const signed = real.sid
+                const value = signed.slice(2)
+                const reavalue = signature.unsign(value, process.env.SECRET)
+                console.log(reavalue, reavalue.slice(2))
+                
+                const ssidValidation = await ModelSid.findOne({ _id: reavalue })
+                if (ssidValidation == null) {
+                    ws.send(JSON.stringify({ kindOf: 'reLogin' }))
+                    return ws.terminate()
+                }
+                else {
+                    const CurrSessionToRemoveFromSocket = await ModelSid.findOne({ _id: { $ne: [ssidValidation.id] }, someId: ssidValidation.someId })
+                    if (CurrSessionToRemoveFromSocket && storing[CurrSessionToRemoveFromSocket.id]) {
+                        const oldSocket = storing[CurrSessionToRemoveFromSocket.id]
+                        if (oldSocket.readyState === WebSocket.OPEN) {
+                            oldSocket.send(JSON.stringify({ kindOf: 'reLogin' }))
+                        }
+                        oldSocket.terminate()
+                        delete storing[CurrSessionToRemoveFromSocket.id]
+                    }
+                    
+                    sessionKey = reavalue
+                    storing[sessionKey] = ws
+                    ws.on('close', () => {
+                        if (sessionKey) {
+                            delete storing[sessionKey]
+                        }
+                    })
+
+                    // Authentication succeeded, process any buffered messages
+                    isAuthenticated = true
+                    for (const msg of messageQueue) {
+                        await handleMessage(msg)
+                    }
+                }
+            } else {
+                ws.send(JSON.stringify({ kindOf: 'reLogin' }))
+                ws.terminate()
+            }
+        } catch (err) {
+            console.error("Error during session validation:", err)
+            ws.send(JSON.stringify({ kindOf: 'reLogin' }))
+            ws.terminate()
+        }
+    })()
 })
 export {
     app,

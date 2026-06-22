@@ -32,12 +32,10 @@ function PendingRequests({name}){
     const onClickTick=(e)=>{
         if(ws.readyState===WebSocket.OPEN){
             ws.send(JSON.stringify({kindOf:'ack',from:name,to}))
-            ws.send(JSON.stringify({kindOf:'pendingReqsForMe',from:to}))    
          }
         else{
             ws.onopen=()=>{
                 ws.send(JSON.stringify({kindOf:'ack',from:name,to}))
-                ws.send(JSON.stringify({kindOf:'pendingReqsForMe',from:to}))
             }
         }
     }

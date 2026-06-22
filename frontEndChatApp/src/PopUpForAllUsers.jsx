@@ -15,9 +15,6 @@ function PopUpForAllUsers({closePopUp}){
                 ws.send(JSON.stringify({kindOf:'allUsersData',mineName:name}))
                  }
                 }
-            return ()=>{
-                ws.close()
-            }
         },[ws])
         
     return (
