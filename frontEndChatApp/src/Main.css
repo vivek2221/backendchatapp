@@ -236,7 +236,7 @@ body {
 @media (max-width: 600px) {
   #mainDivLogin {
     width: 100vw;
-    height: 92.5vh;
+    height: 100dvh;
   }
   #imageNearFormDiv, #svgLineDiv {
     display: none;
@@ -384,10 +384,6 @@ body {
   z-index: 102;
   box-shadow: 0 2px 10px rgba(20, 184, 166, 0.25);
   transition: transform 0.2s ease;
-}
-
-#imageOfNameDiv:hover {
-  /* Still icon on hover */
 }
 
 .underLines {
@@ -701,7 +697,7 @@ body {
   }
   #chatsContentDiv {
     width: 100vw;
-    height: 92vh;
+    height: 100dvh;
   }
 }
 
@@ -904,7 +900,7 @@ body {
     display: none;
     position: fixed;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     left: 0;
     top: 0;
     z-index: 10023;
@@ -1358,7 +1354,8 @@ body {
 
 @media (max-width: 600px) {
   #settingsDrawer {
-    width: 100%;
+    width: 100dvw;
+    height: 100dvh;
   }
 }
 
