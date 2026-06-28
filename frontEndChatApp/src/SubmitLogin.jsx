@@ -50,6 +50,8 @@ function SubLogin({Type}){
     }
     const [values,setValues]=useState({name:'',email:'',password:''})
     const [errors,setErrors]=useState({})
+    const [live,setLive]=useState(false);
+    const [contentLive,setContentLive]=useState('waking server up')
     const checkValidation=(val)=>{
         let err={}
         val.forEach((keys)=>{
@@ -141,6 +143,26 @@ function SubLogin({Type}){
             }
         })
       }
+      let va='';
+      const keyIntervals=setInterval(()=>{
+              if(va=='. . . '){
+                va=''
+              }  
+              va+='. '
+              setContentLive(`waking server up ${va}`)
+      },1000)
+      fetch(`${import.meta.env.VITE_URL_SERVER}/live`)
+      .then((data)=>data.json())
+      .then((data)=>{
+        if(data.live=='live'){
+            setLive(true)
+        }
+      })
+      .catch((err)=>{
+         setContentLive('some error has occured')
+         clearInterval(keyIntervals)
+      })
+
     },[])
     return (
         <div ref={verifyContainer} id='mainDivLogin'>
@@ -175,6 +197,9 @@ function SubLogin({Type}){
                 </form>
             </div>
             </div>
+            {live==true?false:<div className="messageAboutTheServer">
+                {contentLive} 
+            </div>}
         </div>
     )
 }

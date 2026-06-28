@@ -28,6 +28,9 @@ app.use('/connectionTOMe',auth,connectionsTOMe)
 app.use('/beginChat',auth,beginData)
 app.use('/allUsers',auth,friendsListRoute)
 app.use('/rejectReq',auth,rejectReq)
+app.get('/live',(req,res)=>{
+    res.status(200).json({live:'live'})
+})
 
 httpServer.listen((process.env.Port || 10000),process.env.urlCommon,()=>{
     console.log(`server started on port ${process.env.Port}`)
